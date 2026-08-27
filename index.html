@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0B1D3A">
+<title>Super Menu | سوبر منيو</title>
+<meta name="description" content="منيو رقمي تفاعلي — امسح، تصفح، اطلب">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ============ SPLASH / LOADER ============ -->
+<div id="loader" class="loader">
+  <div class="loader-badge">Menu</div>
+</div>
+
+<!-- ============ HEADER ============ -->
+<header class="restaurant-header">
+  <div class="header-top">
+    <button id="theme-toggle" class="icon-btn" aria-label="Toggle theme" title="Dark / Light">
+      <svg class="icon icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="icon icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+    </button>
+
+    <button id="lang-toggle" class="lang-btn" aria-label="Change language">
+      <span class="lang-current">EN</span>
+    </button>
+  </div>
+
+  <div class="header-content">
+    <div class="logo-wrap">
+      <img src="images/logo.svg" alt="Restaurant Logo" class="restaurant-logo" id="logo-img">
+    </div>
+
+    <h1 class="restaurant-name" data-i18n="restaurant_name">سوبر منيو</h1>
+    <p class="restaurant-tagline" data-i18n="restaurant_tagline">أكل شهي، تجربة مختلفة</p>
+
+    <div class="header-actions">
+      <a href="tel:+201234567890" class="action-pill" aria-label="Call">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.362 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.338 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      </a>
+      <a href="https://wa.me/201234567890" target="_blank" rel="noopener" class="action-pill" aria-label="WhatsApp">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M17.6 6.32A7.85 7.85 0 0 0 12.05 4a7.94 7.94 0 0 0-6.9 11.9L4 20l4.2-1.1a7.9 7.9 0 0 0 3.85 1h.02a7.94 7.94 0 0 0 5.53-13.58zM12.07 18.4a6.6 6.6 0 0 1-3.36-.92l-.24-.14-2.5.66.67-2.43-.16-.25a6.58 6.58 0 1 1 5.6 3.08zm3.6-4.93c-.2-.1-1.17-.58-1.35-.64s-.32-.1-.45.1-.5.64-.62.77-.23.15-.43.05a5.4 5.4 0 0 1-1.6-.99 6 6 0 0 1-1.1-1.37c-.12-.2 0-.3.09-.4.1-.1.2-.23.3-.35.1-.12.13-.2.2-.33a.37.37 0 0 0 0-.35c0-.1-.45-1.08-.62-1.48-.16-.4-.33-.33-.45-.34h-.38a.74.74 0 0 0-.53.25 2.24 2.24 0 0 0-.7 1.67 3.9 3.9 0 0 0 .82 2.06 8.9 8.9 0 0 0 3.4 3c.48.2.85.33 1.14.42.48.15.92.13 1.26.08.39-.06 1.17-.48 1.33-.94.17-.46.17-.85.12-.94-.05-.09-.18-.14-.38-.24z"/></svg>
+      </a>
+      <a href="https://instagram.com" target="_blank" rel="noopener" class="action-pill" aria-label="Instagram">
+        <svg class="icon" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+      </a>
+      <a href="https://maps.google.com" target="_blank" rel="noopener" class="action-pill" aria-label="Location">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ SEARCH ============ -->
+<div class="search-wrap">
+  <div class="search-box">
+    <svg class="icon search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" id="search-input" data-i18n-placeholder="search_placeholder" placeholder="ابحث عن صنف...">
+    <button id="clear-search" class="clear-btn" aria-label="Clear">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <button id="fav-filter-btn" class="fav-filter-btn" aria-label="Show favorites">
+    <svg class="icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+  </button>
+</div>
+
+<!-- ============ CATEGORY NAV ============ -->
+<nav class="categories" id="categories">
+  <!-- injected by JS -->
+</nav>
+
+<!-- ============ MENU ============ -->
+<main>
+  <section class="menu-section">
+    <div id="menu-container" class="menu-grid"></div>
+    <div id="empty-state" class="empty-state hidden">
+      <svg class="icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      <p data-i18n="no_results">مفيش نتائج مطابقة لبحثك</p>
+    </div>
+  </section>
+</main>
+
+<!-- ============ PRODUCT MODAL ============ -->
+<div id="product-modal" class="modal-overlay hidden">
+  <div class="modal-sheet" role="dialog" aria-modal="true">
+    <button id="modal-close" class="modal-close" aria-label="Close">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-img-wrap">
+      <img id="modal-img" src="" alt="">
+      <span id="modal-tag" class="menu-tag hidden"></span>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title-row">
+        <h2 id="modal-name"></h2>
+        <button id="modal-fav" class="fav-btn" aria-label="Favorite">
+          <svg class="icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+      </div>
+      <p id="modal-desc" class="modal-desc"></p>
+      <div class="modal-footer">
+        <strong id="modal-price" class="modal-price"></strong>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <p data-i18n="footer_made">اصنع منيو زي ده لمطعمك ✨ Super Menu QR</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
