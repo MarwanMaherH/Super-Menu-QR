@@ -88,8 +88,8 @@ a{ color: inherit; text-decoration: none; }
 }
 .loader-badge{
   font-family: var(--font-heading);
-  font-weight: 800;
-  font-size: 28px;
+  font-weight: 80;
+  font-size: 30px;
   color: var(--cream);
   padding: 18px 40px;
   border: 2px solid var(--gold);
@@ -279,22 +279,85 @@ a{ color: inherit; text-decoration: none; }
   box-shadow: 0 6px 16px hsla(var(--shadow-color) / .25);
 }
 
-/* ==================== MENU GRID ==================== */
-.menu-section{ padding: 4px 20px 20px; }
+/* ==================== MENU — CATEGORY SECTIONS (vertical stack, grid per section) ==================== */
+.menu-section{ padding: 4px 0 20px; }
 
+/* Each category gets its own boxed card: big banner header + colored strip + dishes grid inside */
+.cat-section{
+  margin: 0 20px 26px;
+  scroll-margin-top: 90px; /* so scrollToCategory lands below sticky nav */
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 26px;
+  overflow: hidden;
+  box-shadow: 0 12px 28px hsla(var(--shadow-color) / .10);
+}
+
+.cat-banner{
+  position: relative;
+  height: 130px;
+  display:flex; align-items:flex-end;
+  padding: 16px 18px;
+  overflow: hidden;
+  background: linear-gradient(135deg, var(--cat-color, var(--primary)) 0%, var(--cat-color-dark, var(--primary)) 100%);
+}
+.cat-banner-emoji{
+  position: absolute;
+  top: -14px;
+  inset-inline-end: -6px;
+  font-size: 96px;
+  opacity: .22;
+  transform: rotate(-12deg);
+  line-height: 1;
+  pointer-events: none;
+}
+.cat-banner-title{
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-family: var(--font-heading);
+  font-weight: 800;
+  font-size: 24px;
+  text-shadow: 0 2px 10px rgba(0,0,0,.3);
+}
+.cat-banner-strip{
+  background: var(--cat-color-darker, var(--primary));
+  color: #fff;
+  padding: 9px 19px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.cat-strip-emoji{ font-size: 15px; opacity: .85; }
+.cat-count-pill{
+  font-size: 12px;
+  font-weight: 700;
+  background: rgba(255,255,255,.18);
+  padding: 3px 127px;
+  border-radius: var(--radius-full);
+  letter-spacing: .2px;
+}
+
+.cat-row{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  padding: 16px;
+}
+@media (min-width: 640px){
+  .cat-row{ grid-template-columns: repeat(3, 1fr); }
+}
+@media (min-width: 960px){
+  .cat-row{ grid-template-columns: repeat(4, 1fr); }
+}
+
+/* Fallback grid class kept in case a flat grid view is needed elsewhere */
 .menu-grid{
   display:grid;
   grid-template-columns: 1fr;
   gap: 16px;
+  padding: 0 20px;
 }
 @media (min-width: 560px){
   .menu-grid{ grid-template-columns: repeat(2, 1fr); }
-}
-@media (min-width: 900px){
-  .menu-grid{ grid-template-columns: repeat(3, 1fr); }
-}
-@media (min-width: 1200px){
-  .menu-grid{ grid-template-columns: repeat(4, 1fr); }
 }
 
 .menu-card{
@@ -307,6 +370,10 @@ a{ color: inherit; text-decoration: none; }
   transform: translateY(24px);
   animation: cardAppear .55s ease forwards;
   transition: transform .3s ease, box-shadow .3s ease;
+  width: 100%;
+}
+.cat-section .menu-card{
+  background: var(--surface-alt);
 }
 .menu-card:hover{
   transform: translateY(-6px);
@@ -323,8 +390,7 @@ a{ color: inherit; text-decoration: none; }
   aspect-ratio: 4/3;
   background: var(--surface-alt);
   overflow:hidden;
-}
-.card-img-wrap img{
+}.card-img-wrap img{
   width:100%; height:100%;
   object-fit: cover;
   transition: transform .4s ease;

@@ -12,7 +12,7 @@ const translations = {
     restaurant_tagline: "أكل شهي، تجربة مختلفة",
     search_placeholder: "ابحث عن صنف...",
     no_results: "مفيش نتائج مطابقة لبحثك",
-    footer_made: "اصنع منيو زي ده لمطعمك ✨ Super Menu QR",
+    footer_made: "طوره Marwan Maher",
     cat_all: "الكل",
     cat_appetizers: "مقبلات",
     cat_main: "أطباق رئيسية",
@@ -20,14 +20,19 @@ const translations = {
     cat_pizza: "بيتزا",
     cat_desserts: "حلويات",
     cat_drinks: "مشروبات",
-    currency: "ج.م"
+    currency: "ج.م",
+    items_count_suffix: "أصناف",
+    tap_to_browse: "اضغط للتصفح",
+    back_to_categories: "الأقسام",
+    search_results: "نتائج البحث",
+    favorites_title: "المفضلة"
   },
   en: {
     restaurant_name: "Super Menu",
     restaurant_tagline: "Great food, a different experience",
     search_placeholder: "Search for a dish...",
     no_results: "No items match your search",
-    footer_made: "Build a menu like this for your restaurant ✨ Super Menu QR",
+    footer_made: "Developed by Marwan Maher",
     cat_all: "All",
     cat_appetizers: "Appetizers",
     cat_main: "Main Dishes",
@@ -35,21 +40,28 @@ const translations = {
     cat_pizza: "Pizza",
     cat_desserts: "Desserts",
     cat_drinks: "Drinks",
-    currency: "EGP"
+    currency: "EGP",
+    items_count_suffix: "items",
+    tap_to_browse: "Tap to browse",
+    back_to_categories: "Categories",
+    search_results: "Search results",
+    favorites_title: "Favorites"
   }
 };
 
 /* ---------------------------------------------------------
    2) CATEGORIES
+   كل قسم ليه لون مميز (banner) وإيموجي بيتحطوا كخلفية للبانر الكبير
 --------------------------------------------------------- */
 const categories = [
   { id: "all",        labelKey: "cat_all" },
-  { id: "appetizers", labelKey: "cat_appetizers" },
-  { id: "main",       labelKey: "cat_main" },
-  { id: "burgers",    labelKey: "cat_burgers" },
-  { id: "pizza",      labelKey: "cat_pizza" },
-  { id: "desserts",   labelKey: "cat_desserts" },
-  { id: "drinks",     labelKey: "cat_drinks" }
+  { id: "main",       labelKey: "cat_main",       color: "#C23B22", emoji: "🥔" },
+  { id: "appetizers", labelKey: "cat_appetizers", color: "#D9822B", emoji: "🍟" },
+  { id: "burgers",    labelKey: "cat_burgers",    color: "#8A5A32", emoji: "🍔" },
+  { id: "pizza",      labelKey: "cat_pizza",      color: "#C0392B", emoji: "🍕" },
+  { id: "desserts",   labelKey: "cat_desserts",   color: "#B9812E", emoji: "🧇" },
+  { id: "drinks",     labelKey: "cat_drinks",     color: "#2E5FA3", emoji: "🥤" }
+
 ];
 
 /* ---------------------------------------------------------
@@ -191,6 +203,7 @@ const menuItems = [
 let state = {
   lang: localStorage.getItem("sm_lang") || "ar",
   theme: localStorage.getItem("sm_theme") || "light",
+  view: "home",          // "home" (categories only) | "category" (dishes of one category)
   activeCategory: "all",
   searchQuery: "",
   favorites: JSON.parse(localStorage.getItem("sm_favorites") || "[]"),
@@ -217,10 +230,21 @@ function placeholderImage(color, emoji) {
   return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
 }
 
-const categoryEmoji = {
-  appetizers: "🍟", main: "🥔", burgers: "🍔",
-  pizza: "🍕", desserts: "🧇", drinks: "🥤"
-};
+function shadeColor(hex, percent) {
+  // percent negative = darker, positive = lighter
+  const num = parseInt(hex.replace("#", ""), 16);
+  let r = (num >> 16) + Math.round(255 * (percent / 100));
+  let g = ((num >> 8) & 0x00FF) + Math.round(255 * (percent / 100));
+  let b = (num & 0x0000FF) + Math.round(255 * (percent / 100));
+  r = Math.max(0, Math.min(255, r));
+  g = Math.max(0, Math.min(255, g));
+  b = Math.max(0, Math.min(255, b));
+  return "#" + (0x1000000 + r * 0x10000 + g * 0x100 + b).toString(16).slice(1);
+}
+
+function categoryMeta(catId) {
+  return categories.find(c => c.id === catId) || {};
+}
 
 /* ---------------------------------------------------------
    6) DOM REFS
@@ -261,7 +285,7 @@ function init() {
 }
 
 /* ---------------------------------------------------------
-   8) RENDER CATEGORIES
+   8) RENDER CATEGORIES (top pills)
 --------------------------------------------------------- */
 function renderCategories() {
   const t = translations[state.lang];
@@ -271,77 +295,204 @@ function renderCategories() {
     btn.className = "cat-btn" + (cat.id === state.activeCategory ? " active" : "");
     btn.textContent = t[cat.labelKey];
     btn.dataset.category = cat.id;
-    btn.addEventListener("click", () => {
-      state.activeCategory = cat.id;
-      renderCategories();
-      renderMenu();
-    });
+    btn.addEventListener("click", () => goToCategory(cat.id));
     categoriesNav.appendChild(btn);
   });
 }
 
-/* ---------------------------------------------------------
-   9) FILTER + RENDER MENU
---------------------------------------------------------- */
-function getFilteredItems() {
-  return menuItems.filter(item => {
-    const matchesCategory = state.activeCategory === "all" || item.category === state.activeCategory;
-    const name = item.name[state.lang].toLowerCase();
-    const desc = item.description[state.lang].toLowerCase();
-    const query = state.searchQuery.toLowerCase();
-    const matchesSearch = !query || name.includes(query) || desc.includes(query);
-    const matchesFav = !state.showFavoritesOnly || state.favorites.includes(item.id);
-    return matchesCategory && matchesSearch && matchesFav;
+function setActiveCatButton(catId) {
+  categoriesNav.querySelectorAll(".cat-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.category === catId);
   });
 }
 
-function renderMenu() {
-  const items = getFilteredItems();
-  const t = translations[state.lang];
-  menuContainer.innerHTML = "";
+/* Navigate: "all" -> home (categories list). Any other id -> that category's page. */
+function goToCategory(catId) {
+  if (catId === "all") {
+    state.view = "home";
+    state.activeCategory = "all";
+  } else {
+    state.view = "category";
+    state.activeCategory = catId;
+  }
+  setActiveCatButton(catId);
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  renderMenu();
+}
 
-  if (items.length === 0) {
-    emptyState.classList.remove("hidden");
+/* ---------------------------------------------------------
+   9) FILTER HELPERS + CARD BUILDER
+--------------------------------------------------------- */
+function matchesFilters(item) {
+  const name = item.name[state.lang].toLowerCase();
+  const desc = item.description[state.lang].toLowerCase();
+  const query = state.searchQuery.toLowerCase();
+  const matchesSearch = !query || name.includes(query) || desc.includes(query);
+  const matchesFav = !state.showFavoritesOnly || state.favorites.includes(item.id);
+  return matchesSearch && matchesFav;
+}
+
+function buildCard(item, index) {
+  const t = translations[state.lang];
+  const card = document.createElement("article");
+  card.className = "menu-card";
+  card.style.animationDelay = (index * 0.05) + "s";
+
+  const img = item.image || placeholderImage(item.color, categoryMeta(item.category).emoji || "🍽️");
+  const isFav = state.favorites.includes(item.id);
+  const tagClass = item.tag && item.tag.toUpperCase().includes("NEW") ? "tag-new" : "";
+
+  card.innerHTML = `
+    <div class="card-img-wrap">
+      <img src="${img}" alt="${item.name[state.lang]}" loading="lazy">
+      ${item.tag ? `<span class="menu-tag ${tagClass}">${item.tag}</span>` : ""}
+      <button class="card-fav ${isFav ? "is-fav" : ""}" data-id="${item.id}" aria-label="favorite">
+        <svg class="icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      </button>
+    </div>
+    <div class="card-content">
+      <h3>${item.name[state.lang]}</h3>
+      <p>${item.description[state.lang]}</p>
+      <span class="card-price">${item.price} ${t.currency}</span>
+    </div>
+  `;
+
+  card.addEventListener("click", (e) => {
+    if (e.target.closest(".card-fav")) return;
+    openModal(item.id);
+  });
+
+  card.querySelector(".card-fav").addEventListener("click", (e) => {
+    e.stopPropagation();
+    toggleFavorite(item.id, false);
+  });
+
+  return card;
+}
+
+function catCssVars(section, cat) {
+  section.style.setProperty("--cat-color", cat.color || "var(--primary)");
+  section.style.setProperty("--cat-color-dark", cat.color ? shadeColor(cat.color, -25) : "var(--primary)");
+  section.style.setProperty("--cat-color-darker", cat.color ? shadeColor(cat.color, -38) : "var(--primary)");
+}
+
+/* ---------------------------------------------------------
+   10) MAIN RENDER — decides which "page" to show
+--------------------------------------------------------- */
+function renderMenu() {
+  const query = state.searchQuery.trim();
+
+  // Global search or favorites-only from the home screen: flat results across all categories
+  if (state.view === "home" && (query || state.showFavoritesOnly)) {
+    renderFlatResults();
     return;
   }
-  emptyState.classList.add("hidden");
 
-  items.forEach((item, index) => {
-    const card = document.createElement("article");
-    card.className = "menu-card";
-    card.style.animationDelay = (index * 0.05) + "s";
+  if (state.view === "category") {
+    renderCategoryPage(state.activeCategory);
+    return;
+  }
 
-    const img = item.image || placeholderImage(item.color, categoryEmoji[item.category] || "🍽️");
-    const isFav = state.favorites.includes(item.id);
-    const tagClass = item.tag && item.tag.toUpperCase().includes("NEW") ? "tag-new" : "";
+  renderHomeBanners();
+}
 
-    card.innerHTML = `
-      <div class="card-img-wrap">
-        <img src="${img}" alt="${item.name[state.lang]}" loading="lazy">
-        ${item.tag ? `<span class="menu-tag ${tagClass}">${item.tag}</span>` : ""}
-        <button class="card-fav ${isFav ? "is-fav" : ""}" data-id="${item.id}" aria-label="favorite">
-          <svg class="icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        </button>
+/* ---- HOME: just the category banners, no dishes ---- */
+function renderHomeBanners() {
+  const t = translations[state.lang];
+  menuContainer.innerHTML = "";
+  menuContainer.classList.remove("is-flat");
+
+  const visibleCategories = categories.filter(c => c.id !== "all");
+  let anyVisible = false;
+
+  visibleCategories.forEach(cat => {
+    const count = menuItems.filter(item => item.category === cat.id).length;
+    if (count === 0) return;
+    anyVisible = true;
+
+    const section = document.createElement("button");
+    section.className = "cat-section cat-section-link";
+    section.type = "button";
+    catCssVars(section, cat);
+
+    section.innerHTML = `
+      <div class="cat-banner">
+        <span class="cat-banner-emoji">${cat.emoji || "🍽️"}</span>
+        <h2 class="cat-banner-title">${t[cat.labelKey]}</h2>
       </div>
-      <div class="card-content">
-        <h3>${item.name[state.lang]}</h3>
-        <p>${item.description[state.lang]}</p>
-        <span class="card-price">${item.price} ${t.currency}</span>
+      <div class="cat-banner-strip">
+        <span class="cat-count-pill">${count} ${t.items_count_suffix}</span>
+        <span class="cat-browse-hint">${t.tap_to_browse} ${state.lang === "ar" ? "‹" : "›"}</span>
       </div>
     `;
 
-    card.addEventListener("click", (e) => {
-      if (e.target.closest(".card-fav")) return;
-      openModal(item.id);
-    });
-
-    card.querySelector(".card-fav").addEventListener("click", (e) => {
-      e.stopPropagation();
-      toggleFavorite(item.id, false);
-    });
-
-    menuContainer.appendChild(card);
+    section.addEventListener("click", () => goToCategory(cat.id));
+    menuContainer.appendChild(section);
   });
+
+  emptyState.classList.toggle("hidden", anyVisible);
+}
+
+/* ---- CATEGORY PAGE: back button + banner + dishes grid ---- */
+function renderCategoryPage(catId) {
+  const t = translations[state.lang];
+  const cat = categoryMeta(catId);
+  menuContainer.innerHTML = "";
+  menuContainer.classList.remove("is-flat");
+
+  const items = menuItems.filter(item => item.category === catId && matchesFilters(item));
+
+  const page = document.createElement("div");
+  page.className = "cat-page";
+  catCssVars(page, cat);
+
+  page.innerHTML = `
+    <button type="button" class="back-btn">
+      <svg class="icon" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      ${t.back_to_categories}
+    </button>
+    <div class="cat-section">
+      <div class="cat-banner">
+        <span class="cat-banner-emoji">${cat.emoji || "🍽️"}</span>
+        <h2 class="cat-banner-title">${t[cat.labelKey]}</h2>
+      </div>
+      <div class="cat-banner-strip">
+        <span class="cat-count-pill">${items.length} ${t.items_count_suffix}</span>
+      </div>
+      <div class="cat-row"></div>
+    </div>
+  `;
+
+  page.querySelector(".back-btn").addEventListener("click", () => goToCategory("all"));
+
+  const row = page.querySelector(".cat-row");
+  items.forEach((item, i) => row.appendChild(buildCard(item, i)));
+
+  menuContainer.appendChild(page);
+  emptyState.classList.toggle("hidden", items.length > 0);
+}
+
+/* ---- FLAT RESULTS: search / favorites triggered from the home screen ---- */
+function renderFlatResults() {
+  const t = translations[state.lang];
+  menuContainer.innerHTML = "";
+  menuContainer.classList.add("is-flat");
+
+  const items = menuItems.filter(matchesFilters);
+
+  const title = document.createElement("h2");
+  title.className = "flat-results-title";
+  title.textContent = state.searchQuery.trim()
+    ? t.search_results
+    : t.favorites_title;
+  menuContainer.appendChild(title);
+
+  const grid = document.createElement("div");
+  grid.className = "menu-grid";
+  items.forEach((item, i) => grid.appendChild(buildCard(item, i)));
+  menuContainer.appendChild(grid);
+
+  emptyState.classList.toggle("hidden", items.length > 0);
 }
 
 /* ---------------------------------------------------------
@@ -388,7 +539,7 @@ function openModal(id) {
   currentModalId = id;
   const t = translations[state.lang];
 
-  $("#modal-img").src = item.image || placeholderImage(item.color, categoryEmoji[item.category] || "🍽️");
+  $("#modal-img").src = item.image || placeholderImage(item.color, categoryMeta(item.category).emoji || "🍽️");
   $("#modal-name").textContent = item.name[state.lang];
   $("#modal-desc").textContent = item.description[state.lang];
   $("#modal-price").textContent = `${item.price} ${t.currency}`;
