@@ -5,11 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#0B1D3A">
 <title>Super Menu | سوبر منيو</title>
-<meta name="description" content="منيو رقمي تفاعلي — امسح، تصفح، اطلب">
+<meta name="description" content="منيو رقمي تفاعلي فاخر — امسح، تصفح، اطلب">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Cairo:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="style.css">
 </head>
@@ -17,7 +17,8 @@
 
 <!-- ============ SPLASH / LOADER ============ -->
 <div id="loader" class="loader">
-  <div class="loader-badge">Menu</div>
+  <div class="loader-mark"><span>SM</span></div>
+  <div class="loader-badge">Super Menu</div>
 </div>
 
 <!-- ============ HEADER ============ -->
@@ -35,9 +36,10 @@
 
   <div class="header-content">
     <div class="logo-wrap">
-      <img src="images/logo.svg" alt="Restaurant Logo" class="restaurant-logo" id="logo-img">
+      <img src="images/logo.svg" alt="Restaurant Logo" class="restaurant-logo" id="logo-img" onerror="this.style.display='none'">
     </div>
 
+    <span class="eyebrow" data-i18n="eyebrow">منيو رقمي تفاعلي</span>
     <h1 class="restaurant-name" data-i18n="restaurant_name">سوبر منيو</h1>
     <p class="restaurant-tagline" data-i18n="restaurant_tagline">أكل شهي، تجربة مختلفة</p>
 
@@ -91,6 +93,7 @@
 <!-- ============ PRODUCT MODAL ============ -->
 <div id="product-modal" class="modal-overlay hidden">
   <div class="modal-sheet" role="dialog" aria-modal="true">
+    <div class="modal-drag"><span></span></div>
     <button id="modal-close" class="modal-close" aria-label="Close">
       <svg class="icon" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
@@ -108,16 +111,27 @@
       <p id="modal-desc" class="modal-desc"></p>
       <div class="modal-footer">
         <strong id="modal-price" class="modal-price"></strong>
+        <span id="modal-order-hint" class="modal-cta"></span>
       </div>
     </div>
   </div>
 </div>
 
+<!-- ============ SCROLL TOP FAB ============ -->
+<button id="scroll-top-btn" class="scroll-top-btn" aria-label="Scroll to top">
+  <svg class="icon" viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+</button>
+
+<!-- ============ TOAST ============ -->
+<div id="toast" class="toast"></div>
+
 <!-- ============ FOOTER ============ -->
 <footer class="site-footer">
+  <div class="footer-divider"></div>
   <p data-i18n="footer_made">اصنع منيو زي ده لمطعمك ✨ Super Menu QR</p>
 </footer>
 
+<script src="data.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
