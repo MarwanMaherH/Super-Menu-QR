@@ -26,7 +26,7 @@ const translations = {
     removed_fav: "تمت الإزالة من المفضلة",
     order_hint: "اطلب من فريق الخدمة",
     view_categories: "تصفح كل الأقسام",
-    maroo: "مـن تطــويــر مـــروان مـــاهـــر"
+    maroo: "من تطوير مروان ماهر"
   },
   en: {
     restaurant_name: "Super Menu",
