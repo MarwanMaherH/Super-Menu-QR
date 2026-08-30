@@ -6,10 +6,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Cairo:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
 
 :root{
-  --navy: #b4b7bb;
+##  --navy: #0B1D3A;
   --navy-deep: #050D1D;
   --navy-mid: #12274A;
-  --cream: #e9e8e6;
+  --cream: #F6F1E3;
   --cream-warm: #EFE6CE;
   --gold: #C9A24B;
   --gold-bright: #E9CD84;
@@ -26,7 +26,7 @@
   --text-muted: #766A52;
   --border: #E7DCC1;
   --primary: var(--navy);
-  --primary-contrast: #FFFFFF;
+##  --primary-contrast: #FFFFFF;
   --accent: var(--gold);
   --shadow-color: 30 45% 8%;
   --skeleton: #EAE1C8;
@@ -39,8 +39,8 @@
   --radius-full: 999px;
 
   --font-display: 'Fraunces', 'Cairo', serif;
-##  --font-heading: 'Cairo', 'Poppins', sans-serif;
-##  --font-body: 'Cairo', 'Poppins', sans-serif;
+  --font-heading: 'Cairo', 'Poppins', sans-serif;
+  --font-body: 'Cairo', 'Poppins', sans-serif;
   --font-latin: 'Poppins', sans-serif;
 
   --ease-out: cubic-bezier(.19,1,.22,1);
@@ -62,7 +62,7 @@
   --primary-contrast: #0C0F1C;
   --accent: var(--gold-bright);
   --shadow-color: 0 0% 0%;
-##  --skeleton: #1B2136;
+  --skeleton: #1B2136;
   --skeleton-shine: #232A44;
 }
 
@@ -158,8 +158,8 @@ a{ color: inherit; text-decoration: none; }
 .icon-btn, .lang-btn{
   width: 42px; height:42px;
   border-radius: var(--radius-full);
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.12);
+  background: rgb(35, 35, 35);
+  border: 1px solid rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(8px);
   display:flex; align-items:center; justify-content:center;
   color: var(--cream);
@@ -219,8 +219,8 @@ a{ color: inherit; text-decoration: none; }
 .action-pill{
   width: 44px; height:44px;
   border-radius: var(--radius-full);
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.14);
+  background: #050D1D;
+  border: 1px solid rgba(0, 0, 0, 0.14);
   backdrop-filter: blur(8px);
   display:flex; align-items:center; justify-content:center;
   transition: transform var(--dur-fast) var(--ease-spring), background var(--dur-fast) ease, box-shadow var(--dur-fast);
