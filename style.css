@@ -72,7 +72,289 @@ html{ scroll-behavior: smooth; }
   html{ scroll-behavior:auto; }
   *, *::before, *::after{ animation-duration: .01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important; }
 }
+/* ==========================================================
+   PREMIUM VIDEO HEADER
+   ========================================================== */
 
+.restaurant-header {
+  position: relative;
+  min-height: 430px;
+  padding: 18px 20px 38px;
+  border-radius: 0 0 34px 34px;
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--cream);
+  background: var(--navy-deep);
+  z-index: 1;
+}
+
+/* VIDEO BACKGROUND */
+.restaurant-header > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  z-index: -3;
+  pointer-events: none;
+}
+
+/* DARK CINEMATIC OVERLAY */
+.restaurant-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 13, 29, 0.72) 0%,
+      rgba(5, 13, 29, 0.38) 42%,
+      rgba(5, 13, 29, 0.88) 100%
+    );
+}
+
+/* GOLD CINEMATIC GLOW */
+.restaurant-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+
+  background:
+    radial-gradient(
+      circle at 50% 25%,
+      rgba(225, 164, 9, 0.104),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(239, 218, 212, 0.377),
+      transparent 35%
+    );
+  
+  pointer-events: none;
+}
+
+/* HEADER TOP */
+
+.header-top {
+  position: relative;
+  z-index: 5;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* HEADER CONTENT */
+
+.header-content {
+  position: relative;
+  z-index: 5;
+
+  text-align: center;
+  margin-top: 30px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  animation: fadeSlideUp 0.8s var(--ease-out);
+}
+
+/* LOGO */
+
+.logo {
+  width: 84px;
+  height: 84px;
+
+  border-radius: 50%;
+
+  background: var(--cream);
+  padding: 4px;
+
+  border: 2px solid var(--gold);
+
+  box-shadow:
+    0 12px 35px rgba(0, 0, 0, 0.45),
+    0 0 0 6px rgba(233, 205, 132, 0.09);
+
+  margin-bottom: 16px;
+
+  overflow: hidden;
+}
+
+.logo .resta {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 50%;
+
+  object-fit: cover;
+}
+
+/* RESTAURANT NAME */
+
+.restaurant-name {
+  font-family: var(--font-heading);
+  font-weight: 900;
+
+  font-size: clamp(28px, 8vw, 7px);
+
+  letter-spacing: 0.3px;
+
+  background:
+    linear-gradient(
+      95deg,
+      var(--cream) 00%,
+      var(--gold-bright) 00%,
+      var(--cream) 0%
+    );
+
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  color: transparent;
+
+  background-size: 200% auto;
+
+  animation: shimmerText 6s ease-in-out infinite;
+}
+
+/* TAGLINE */
+
+.restaurant-tagline {
+  color: var(--gold-bright);
+
+  margin-top: 3px;
+
+  font-size: 14px;
+
+  opacity: 0.9;
+
+  letter-spacing: 0.3px;
+
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* ACTIONS */
+
+.header-actions {
+  display: flex;
+  gap: 10px;
+
+  margin-top: 22px;
+}
+
+.action-pill {
+  width: 44px;
+  height: 44px;
+
+  border-radius: var(--radius-full);
+
+  background: rgba(5, 13, 29, 0.72);
+
+  border: 1px solid rgba(233, 205, 132, 0.22);
+
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: var(--cream);
+
+  transition:
+    transform var(--dur-fast) var(--ease-spring),
+    background var(--dur-fast) ease,
+    box-shadow var(--dur-fast),
+    border-color var(--dur-fast);
+}
+
+.action-pill:hover {
+  background: var(--gold);
+  color: var(--navy);
+
+  border-color: var(--gold);
+
+  box-shadow:
+    0 10px 25px rgba(201, 162, 75, 0.35);
+
+  transform: translateY(-3px);
+}
+
+.action-pill:active {
+  transform: scale(0.88);
+}
+
+/* MOBILE */
+
+@media (max-width: 768px) {
+
+  .restaurant-header {
+    min-height: 370px;
+
+    padding:
+      14px
+      16px
+      32px;
+
+    border-radius: 0 0 28px 7px;
+  }
+
+  .restaurant-header > video {
+    object-position: center;
+  }
+
+  .header-content {
+    margin-top: 24px;
+  }
+
+  .logo {
+    width: 72px;
+    height: 72px;
+  }
+
+  .restaurant-name {
+    font-size: clamp(26px, 8vw, 7px);
+  }
+
+  .restaurant-tagline {
+    font-size: 13px;
+  }
+
+  .header-actions {
+    margin-top: 3px;
+  }
+}
+
+/* SMALL PHONES */
+
+@media (max-width: 480px) {
+
+  .restaurant-header {
+    min-height: 340px;
+  }
+
+  .logo {
+    width: 66px;
+    height: 66px;
+    margin-bottom: 12px;
+  }
+
+  .header-actions {
+    gap: 8px;
+  }
+
+  .action-pill {
+    width: 42px;
+    height: 42px;
+  }
+}
 body{
   background: var(--bg);
   color: var(--text);
@@ -165,7 +447,7 @@ a{ color: inherit; text-decoration: none; }
   color: var(--cream);
   transition: background var(--dur-fast) ease, transform var(--dur-fast) var(--ease-spring), border-color var(--dur-fast);
 }
-.icon-btn:hover, .lang-btn:hover{ background: rgba(233,205,132,.18); border-color: rgba(233,205,132,.4); }
+.icon-btn:hover, .lang-btn:hover{ background: #c9a14b62 ; border-color: #c9a14ba3; }
 .icon-btn:active, .lang-btn:active{ transform: scale(.88); }
 .icon-btn .icon{ width:19px; height:19px; }
 
@@ -204,18 +486,13 @@ a{ color: inherit; text-decoration: none; }
 .restaurant-name{
   font-family: var(--font-heading);
   font-weight: 900;
-  font-size: clamp(28px, 8vw, 38px);
-  letter-spacing: .3px;
-  background: linear-gradient(95deg, var(--cream) 30%, var(--gold-bright) 60%, var(--cream) 90%);
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-  background-size: 200% auto;
-  animation: shimmerText 6s ease-in-out infinite;
+  font-size: clamp(28px, 8vw, 40px);
+  letter-spacing: 1.3px;
 }
-@keyframes shimmerText{ 0%,100%{ background-position: 0% center; } 50%{ background-position: 100% center; } }
 
 .restaurant-tagline{ color: var(--gold-bright); margin-top: 8px; font-size: 14px; opacity: .85; letter-spacing: .3px; }
 
-.header-actions{ display:flex; gap:10px; margin-top: 20px; }
+.header-actions{ display:flex; gap:10px; margin-top: 95px; }
 .action-pill{
   width: 44px; height:44px;
   border-radius: var(--radius-full);
@@ -630,3 +907,4 @@ html[dir="ltr"] .restaurant-header{ text-align:center; }
   background: linear-gradient(100deg, transparent 30%, var(--skeleton-shine) 50%, transparent 70%);
   background-size: 200% 100%; animation: shine 1.4s ease-in-out infinite;
 }
+
