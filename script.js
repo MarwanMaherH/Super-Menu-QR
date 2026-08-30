@@ -14,7 +14,7 @@ const translations = {
     eyebrow: "منيو رقمي تفاعلي",
     search_placeholder: "ابحث عن صنف...",
     no_results: "مفيش نتائج مطابقة لبحثك",
-    footer_made: "اصنع منيو زي ده لمطعمك Super Menu QR",
+    footer_made: "قم بإنشاء قائمة طعام مثل هذه لمطعمك",
     cat_all: "الكل",
     currency: "ج.م",
     items_count_suffix: "صنف",
@@ -25,7 +25,8 @@ const translations = {
     added_fav: "تمت الإضافة للمفضلة",
     removed_fav: "تمت الإزالة من المفضلة",
     order_hint: "اطلب من فريق الخدمة",
-    view_categories: "تصفح كل الأقسام"
+    view_categories: "تصفح كل الأقسام",
+    maroo: "مـن تطــويــر مـــروان مـــاهـــر"
   },
   en: {
     restaurant_name: "Super Menu",
@@ -33,7 +34,7 @@ const translations = {
     eyebrow: "Interactive Digital Menu",
     search_placeholder: "Search for a dish...",
     no_results: "No items match your search",
-    footer_made: "Crafted with Super Menu QR",
+    footer_made: "Create a menu like this for your restaurant",
     cat_all: "All",
     currency: "EGP",
     items_count_suffix: "items",
@@ -44,7 +45,9 @@ const translations = {
     added_fav: "Added to favorites",
     removed_fav: "Removed from favorites",
     order_hint: "Ask your server to order",
-    view_categories: "Browse all categories"
+    view_categories: "Browse all categories",
+        maroo: "Developed by Marwan Maher"
+
   }
 };
 
