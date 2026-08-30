@@ -6,10 +6,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Cairo:wght@400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap');
 
 :root{
-  --navy: #0B1D3A;
+  --navy: #b4b7bb;
   --navy-deep: #050D1D;
   --navy-mid: #12274A;
-  --cream: #F6F1E3;
+  --cream: #e9e8e6;
   --cream-warm: #EFE6CE;
   --gold: #C9A24B;
   --gold-bright: #E9CD84;
@@ -39,8 +39,8 @@
   --radius-full: 999px;
 
   --font-display: 'Fraunces', 'Cairo', serif;
-  --font-heading: 'Cairo', 'Poppins', sans-serif;
-  --font-body: 'Cairo', 'Poppins', sans-serif;
+##  --font-heading: 'Cairo', 'Poppins', sans-serif;
+##  --font-body: 'Cairo', 'Poppins', sans-serif;
   --font-latin: 'Poppins', sans-serif;
 
   --ease-out: cubic-bezier(.19,1,.22,1);
@@ -62,7 +62,7 @@
   --primary-contrast: #0C0F1C;
   --accent: var(--gold-bright);
   --shadow-color: 0 0% 0%;
-  --skeleton: #1B2136;
+##  --skeleton: #1B2136;
   --skeleton-shine: #232A44;
 }
 

@@ -34,15 +34,15 @@ const categories = [
     "banner": "https://i.pinimg.com/1200x/f0/ed/1c/f0ed1c0148d42cadae9e7b0d2f0e69eb.jpg",
     "thumb": "https://i.pinimg.com/1200x/f0/ed/1c/f0ed1c0148d42cadae9e7b0d2f0e69eb.jpg"
   },
-  {
+  {//تحتاج تغيير
     "id": "soup",
     "en": "Soup",
     "ar": "الشوربة",
     "icon": "soup,bowlfood",
     "color": "#8A5A32",
     "number": 4,
-    "banner": "https://loremflickr.com/1200/720/soup,bowlfood/all?lock=9003",
-    "thumb":  "https://loremflickr.com/160/160/soup,bowlfood/all?lock=9003"
+    "banner": "https://i.pinimg.com/1200x/10/ed/a9/10eda934d9be5b17a0e31400db134ab4.jpg",
+    "thumb":  "https://i.pinimg.com/1200x/10/ed/a9/10eda934d9be5b17a0e31400db134ab4.jpg"
   },
   {
     "id": "sandwiches",
@@ -3315,7 +3315,7 @@ const menuItems = [
     },
     "price": 50,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/espresso,latteart/all?lock=204"
+   // "image": "https://loremflickr.com/640/520/espresso,latteart/all?lock=204"
   },
   {
     "id": 205,
@@ -3330,7 +3330,7 @@ const menuItems = [
     },
     "price": 75,
     "tag": "SIGNATURE",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=205"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=205"
   },
   {
     "id": 206,
@@ -3345,7 +3345,7 @@ const menuItems = [
     },
     "price": 75,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=206"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=206"
   },
   {
     "id": 207,
@@ -3360,7 +3360,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=207"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=207"
   },
   {
     "id": 208,
@@ -3375,7 +3375,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=208"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=208"
   },
   {
     "id": 209,
@@ -3390,7 +3390,7 @@ const menuItems = [
     },
     "price": 60,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=209"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=209"
   },
   {
     "id": 210,
@@ -3405,7 +3405,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=210"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=210"
   },
   {
     "id": 211,
@@ -3420,7 +3420,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=211"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=211"
   },
   {
     "id": 212,
@@ -3435,7 +3435,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=212"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=212"
   },
   {
     "id": 213,
@@ -3450,7 +3450,7 @@ const menuItems = [
     },
     "price": 60,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=213"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=213"
   },
   {
     "id": 214,
@@ -3465,7 +3465,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=214"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=214"
   },
   {
     "id": 215,
@@ -3480,7 +3480,7 @@ const menuItems = [
     },
     "price": 60,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=215"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=215"
   },
   {
     "id": 216,
@@ -3495,7 +3495,7 @@ const menuItems = [
     },
     "price": 75,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=216"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=216"
   },
   {
     "id": 217,
@@ -3510,7 +3510,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=217"
+   // "image": "https://loremflickr.com/640/520/icedcoffee,coldbrew/all?lock=217"
   },
   {
     "id": 218,
@@ -3525,7 +3525,7 @@ const menuItems = [
     },
     "price": 105,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=218"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=218"
   },
   {
     "id": 219,
@@ -3540,7 +3540,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=219"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=219"
   },
   {
     "id": 220,
@@ -3555,7 +3555,7 @@ const menuItems = [
     },
     "price": 115,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=220"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=220"
   },
   {
     "id": 221,
@@ -3570,7 +3570,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=221"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=221"
   },
   {
     "id": 222,
@@ -3585,7 +3585,7 @@ const menuItems = [
     },
     "price": 105,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=222"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=222"
   },
   {
     "id": 223,
@@ -3600,7 +3600,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=223"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=223"
   },
   {
     "id": 224,
@@ -3615,7 +3615,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=224"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=224"
   },
   {
     "id": 225,
@@ -3630,7 +3630,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=225"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=225"
   },
   {
     "id": 226,
@@ -3645,7 +3645,7 @@ const menuItems = [
     },
     "price": 120,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=226"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=226"
   },
   {
     "id": 227,
@@ -3660,7 +3660,7 @@ const menuItems = [
     },
     "price": 125,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=227"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=227"
   },
   {
     "id": 228,
@@ -3675,7 +3675,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=228"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=228"
   },
   {
     "id": 229,
@@ -3690,7 +3690,7 @@ const menuItems = [
     },
     "price": 105,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=229"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=229"
   },
   {
     "id": 230,
@@ -3705,7 +3705,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=230"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=230"
   },
   {
     "id": 231,
@@ -3720,7 +3720,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/milkshake/all?lock=231"
+   // "image": "https://loremflickr.com/640/520/milkshake/all?lock=231"
   },
   {
     "id": 232,
@@ -3735,7 +3735,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=232"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=232"
   },
   {
     "id": 233,
@@ -3750,7 +3750,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=233"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=233"
   },
   {
     "id": 234,
@@ -3765,7 +3765,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=234"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=234"
   },
   {
     "id": 235,
@@ -3780,7 +3780,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=235"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=235"
   },
   {
     "id": 236,
@@ -3795,7 +3795,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=236"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=236"
   },
   {
     "id": 237,
@@ -3810,7 +3810,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=237"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=237"
   },
   {
     "id": 238,
@@ -3825,7 +3825,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "NEW",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=238"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=238"
   },
   {
     "id": 239,
@@ -3840,7 +3840,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=239"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=239"
   },
   {
     "id": 240,
@@ -3855,7 +3855,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=240"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=240"
   },
   {
     "id": 241,
@@ -3870,7 +3870,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "SIGNATURE",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=241"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=241"
   },
   {
     "id": 242,
@@ -3885,7 +3885,7 @@ const menuItems = [
     },
     "price": 115,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=242"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=242"
   },
   {
     "id": 243,
@@ -3900,7 +3900,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=243"
+   // "image": "https://loremflickr.com/640/520/frappe,icedcoffeedrink/all?lock=243"
   },
   {
     "id": 244,
@@ -3915,7 +3915,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=244"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=244"
   },
   {
     "id": 245,
@@ -3930,7 +3930,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=245"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=245"
   },
   {
     "id": 246,
@@ -3945,7 +3945,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=246"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=246"
   },
   {
     "id": 247,
@@ -3960,7 +3960,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=247"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=247"
   },
   {
     "id": 248,
@@ -3975,7 +3975,7 @@ const menuItems = [
     },
     "price": 105,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=248"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=248"
   },
   {
     "id": 249,
@@ -3990,7 +3990,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=249"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=249"
   },
   {
     "id": 250,
@@ -4005,7 +4005,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=250"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=250"
   },
   {
     "id": 251,
@@ -4020,7 +4020,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=251"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=251"
   },
   {
     "id": 252,
@@ -4035,7 +4035,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=252"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=252"
   },
   {
     "id": 253,
@@ -4050,7 +4050,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=253"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=253"
   },
   {
     "id": 254,
@@ -4065,7 +4065,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=254"
+   // "image": "https://loremflickr.com/640/520/smoothie,fruitsmoothie/all?lock=254"
   },
   {
     "id": 255,
@@ -4080,7 +4080,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=255"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=255"
   },
   {
     "id": 256,
@@ -4095,7 +4095,7 @@ const menuItems = [
     },
     "price": 55,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=256"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=256"
   },
   {
     "id": 257,
@@ -4110,7 +4110,7 @@ const menuItems = [
     },
     "price": 65,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=257"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=257"
   },
   {
     "id": 258,
@@ -4125,7 +4125,7 @@ const menuItems = [
     },
     "price": 50,
     "tag": "CHEF'S PICK",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=258"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=258"
   },
   {
     "id": 259,
@@ -4140,7 +4140,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "NEW",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=259"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=259"
   },
   {
     "id": 260,
@@ -4155,7 +4155,7 @@ const menuItems = [
     },
     "price": 50,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=260"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=260"
   },
   {
     "id": 261,
@@ -4170,7 +4170,7 @@ const menuItems = [
     },
     "price": 60,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=261"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=261"
   },
   {
     "id": 262,
@@ -4185,7 +4185,7 @@ const menuItems = [
     },
     "price": 60,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=262"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=262"
   },
   {
     "id": 263,
@@ -4200,7 +4200,7 @@ const menuItems = [
     },
     "price": 50,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=263"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=263"
   },
   {
     "id": 264,
@@ -4215,7 +4215,7 @@ const menuItems = [
     },
     "price": 60,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=264"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=264"
   },
   {
     "id": 265,
@@ -4230,7 +4230,7 @@ const menuItems = [
     },
     "price": 65,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=265"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=265"
   },
   {
     "id": 266,
@@ -4245,7 +4245,7 @@ const menuItems = [
     },
     "price": 45,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=266"
+   // "image": "https://loremflickr.com/640/520/freshjuice,orangejuice/all?lock=266"
   },
   {
     "id": 267,
@@ -4260,7 +4260,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=267"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=267"
   },
   {
     "id": 268,
@@ -4275,7 +4275,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=268"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=268"
   },
   {
     "id": 269,
@@ -4290,7 +4290,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=269"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=269"
   },
   {
     "id": 270,
@@ -4305,7 +4305,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=270"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=270"
   },
   {
     "id": 271,
@@ -4320,7 +4320,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=271"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=271"
   },
   {
     "id": 272,
@@ -4335,7 +4335,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=272"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=272"
   },
   {
     "id": 273,
@@ -4350,7 +4350,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=273"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=273"
   },
   {
     "id": 274,
@@ -4365,7 +4365,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=274"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=274"
   },
   {
     "id": 275,
@@ -4380,7 +4380,7 @@ const menuItems = [
     },
     "price": 105,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=275"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=275"
   },
   {
     "id": 276,
@@ -4395,7 +4395,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=276"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=276"
   },
   {
     "id": 277,
@@ -4410,7 +4410,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=277"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=277"
   },
   {
     "id": 278,
@@ -4425,7 +4425,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "NEW",
-    "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=278"
+   // "image": "https://loremflickr.com/640/520/mocktail,cocktaildrink/all?lock=278"
   },
   {
     "id": 279,
@@ -4440,7 +4440,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "SIGNATURE",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=279"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=279"
   },
   {
     "id": 280,
@@ -4455,7 +4455,7 @@ const menuItems = [
     },
     "price": 95,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=280"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=280"
   },
   {
     "id": 281,
@@ -4470,7 +4470,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=281"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=281"
   },
   {
     "id": 282,
@@ -4485,7 +4485,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=282"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=282"
   },
   {
     "id": 283,
@@ -4500,7 +4500,7 @@ const menuItems = [
     },
     "price": 105,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=283"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=283"
   },
   {
     "id": 284,
@@ -4515,7 +4515,7 @@ const menuItems = [
     },
     "price": 105,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=284"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=284"
   },
   {
     "id": 285,
@@ -4530,7 +4530,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=285"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=285"
   },
   {
     "id": 286,
@@ -4545,7 +4545,7 @@ const menuItems = [
     },
     "price": 75,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=286"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=286"
   },
   {
     "id": 287,
@@ -4560,7 +4560,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "CHEF'S PICK",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=287"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=287"
   },
   {
     "id": 288,
@@ -4575,7 +4575,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=288"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=288"
   },
   {
     "id": 289,
@@ -4590,7 +4590,7 @@ const menuItems = [
     },
     "price": 75,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=289"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=289"
   },
   {
     "id": 290,
@@ -4605,7 +4605,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "SIGNATURE",
-    "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=290"
+   // "image": "https://loremflickr.com/640/520/mojito,mintdrink/all?lock=290"
   },
   {
     "id": 291,
@@ -4620,7 +4620,7 @@ const menuItems = [
     },
     "price": 30,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=291"
+  //  "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=291"
   },
   {
     "id": 292,
@@ -4635,7 +4635,7 @@ const menuItems = [
     },
     "price": 35,
     "tag": "NEW",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=292"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=292"
   },
   {
     "id": 293,
@@ -4650,7 +4650,7 @@ const menuItems = [
     },
     "price": 55,
     "tag": "NEW",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=293"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=293"
   },
   {
     "id": 294,
@@ -4665,7 +4665,7 @@ const menuItems = [
     },
     "price": 35,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=294"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=294"
   },
   {
     "id": 295,
@@ -4680,7 +4680,7 @@ const menuItems = [
     },
     "price": 40,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=295"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=295"
   },
   {
     "id": 296,
@@ -4695,7 +4695,7 @@ const menuItems = [
     },
     "price": 35,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=296"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=296"
   },
   {
     "id": 297,
@@ -4710,7 +4710,7 @@ const menuItems = [
     },
     "price": 55,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=297"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=297"
   },
   {
     "id": 298,
@@ -4725,7 +4725,7 @@ const menuItems = [
     },
     "price": 35,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=298"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=298"
   },
   {
     "id": 299,
@@ -4740,7 +4740,7 @@ const menuItems = [
     },
     "price": 30,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=299"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=299"
   },
   {
     "id": 300,
@@ -4755,7 +4755,7 @@ const menuItems = [
     },
     "price": 40,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=300"
+   // "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=300"
   },
   {
     "id": 301,
@@ -4770,7 +4770,7 @@ const menuItems = [
     },
     "price": 45,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=301"
+  //  "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=301"
   },
   {
     "id": 302,
@@ -4785,7 +4785,7 @@ const menuItems = [
     },
     "price": 55,
     "tag": "SIGNATURE",
-    "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=302"
+  //  "image": "https://loremflickr.com/640/520/softdrink,sodaglass/all?lock=302"
   },
   {
     "id": 303,
@@ -4800,7 +4800,7 @@ const menuItems = [
     },
     "price": 130,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=303"
+  //  "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=303"
   },
   {
     "id": 304,
@@ -4815,7 +4815,7 @@ const menuItems = [
     },
     "price": 135,
     "tag": "CHEF'S PICK",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=304"
+  //  "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=304"
   },
   {
     "id": 305,
@@ -4830,7 +4830,7 @@ const menuItems = [
     },
     "price": 140,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=305"
+  //  "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=305"
   },
   {
     "id": 306,
@@ -4845,7 +4845,7 @@ const menuItems = [
     },
     "price": 135,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=306"
+  //  "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=306"
   },
   {
     "id": 307,
@@ -4860,7 +4860,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=307"
+  //  "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=307"
   },
   {
     "id": 308,
@@ -4875,7 +4875,7 @@ const menuItems = [
     },
     "price": 130,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=308"
+   // "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=308"
   },
   {
     "id": 309,
@@ -4890,7 +4890,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=309"
+  //  "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=309"
   },
   {
     "id": 310,
@@ -4905,7 +4905,7 @@ const menuItems = [
     },
     "price": 135,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=310"
+  //  "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=310"
   },
   {
     "id": 311,
@@ -4920,7 +4920,7 @@ const menuItems = [
     },
     "price": 125,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=311"
+   // "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=311"
   },
   {
     "id": 312,
@@ -4935,7 +4935,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=312"
+   // "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=312"
   },
   {
     "id": 313,
@@ -4950,7 +4950,7 @@ const menuItems = [
     },
     "price": 120,
     "tag": "NEW",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=313"
+   // "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=313"
   },
   {
     "id": 314,
@@ -4965,7 +4965,7 @@ const menuItems = [
     },
     "price": 110,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=314"
+   // "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=314"
   },
   {
     "id": 315,
@@ -4980,7 +4980,7 @@ const menuItems = [
     },
     "price": 120,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=315"
+   // "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=315"
   },
   {
     "id": 316,
@@ -4995,7 +4995,7 @@ const menuItems = [
     },
     "price": 115,
     "tag": "SIGNATURE",
-    "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=316"
+  //  "image": "https://loremflickr.com/640/520/dessert,chocolatecake/all?lock=316"
   },
   {
     "id": 317,
@@ -5010,7 +5010,7 @@ const menuItems = [
     },
     "price": 75,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=317"
+   // "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=317"
   },
   {
     "id": 318,
@@ -5025,7 +5025,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=318"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=318"
   },
   {
     "id": 319,
@@ -5040,7 +5040,7 @@ const menuItems = [
     },
     "price": 75,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=319"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=319"
   },
   {
     "id": 320,
@@ -5055,7 +5055,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=320"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=320"
   },
   {
     "id": 321,
@@ -5070,7 +5070,7 @@ const menuItems = [
     },
     "price": 60,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=321"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=321"
   },
   {
     "id": 322,
@@ -5085,7 +5085,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "CHEF'S PICK",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=322"
+   // "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=322"
   },
   {
     "id": 323,
@@ -5100,7 +5100,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=323"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=323"
   },
   {
     "id": 324,
@@ -5115,7 +5115,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=324"
+   // "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=324"
   },
   {
     "id": 325,
@@ -5130,7 +5130,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=325"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=325"
   },
   {
     "id": 326,
@@ -5145,7 +5145,7 @@ const menuItems = [
     },
     "price": 65,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=326"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=326"
   },
   {
     "id": 327,
@@ -5160,7 +5160,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=327"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=327"
   },
   {
     "id": 328,
@@ -5175,7 +5175,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=328"
+  //  "image": "https://loremflickr.com/640/520/icecream,gelato/all?lock=328"
   },
   {
     "id": 329,
@@ -5190,7 +5190,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=329"
+  //  "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=329"
   },
   {
     "id": 330,
@@ -5205,7 +5205,7 @@ const menuItems = [
     },
     "price": 80,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=330"
+   // "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=330"
   },
   {
     "id": 331,
@@ -5220,7 +5220,7 @@ const menuItems = [
     },
     "price": 90,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=331"
+  //  "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=331"
   },
   {
     "id": 332,
@@ -5235,7 +5235,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "CHEF'S PICK",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=332"
+  //  "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=332"
   },
   {
     "id": 333,
@@ -5250,7 +5250,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=333"
+  //  "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=333"
   },
   {
     "id": 334,
@@ -5265,7 +5265,7 @@ const menuItems = [
     },
     "price": 100,
     "tag": "CHEF'S PICK",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=334"
+  //  "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=334"
   },
   {
     "id": 335,
@@ -5280,7 +5280,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=335"
+  //  "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=335"
   },
   {
     "id": 336,
@@ -5295,7 +5295,7 @@ const menuItems = [
     },
     "price": 85,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=336"
+    //"image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=336"
   },
   {
     "id": 337,
@@ -5310,7 +5310,7 @@ const menuItems = [
     },
     "price": 70,
     "tag": "BEST SELLER",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=337"
+    //"image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=337"
   },
   {
     "id": 338,
@@ -5325,7 +5325,7 @@ const menuItems = [
     },
     "price": 75,
     "tag": "",
-    "image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=338"
+    //"image": "https://loremflickr.com/640/520/bubbletea,boba/all?lock=338"
   },
   {
     "id": 339,

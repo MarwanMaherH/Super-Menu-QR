@@ -14,7 +14,7 @@ const translations = {
     eyebrow: "منيو رقمي تفاعلي",
     search_placeholder: "ابحث عن صنف...",
     no_results: "مفيش نتائج مطابقة لبحثك",
-    footer_made: "اصنع منيو زي ده لمطعمك ✨ Super Menu QR",
+    footer_made: "اصنع منيو زي ده لمطعمك Super Menu QR",
     cat_all: "الكل",
     currency: "ج.م",
     items_count_suffix: "صنف",
@@ -33,7 +33,7 @@ const translations = {
     eyebrow: "Interactive Digital Menu",
     search_placeholder: "Search for a dish...",
     no_results: "No items match your search",
-    footer_made: "Crafted with ✨ Super Menu QR",
+    footer_made: "Crafted with Super Menu QR",
     cat_all: "All",
     currency: "EGP",
     items_count_suffix: "items",
@@ -411,6 +411,7 @@ function clearSearch() {
 /* ---------------------------------------------------------
    11) FAVORITES (localStorage)
 --------------------------------------------------------- */
+
 function toggleFavorite(id, fromModal, btnEl) {
   const t = translations[state.lang];
   const idx = state.favorites.indexOf(id);
@@ -418,6 +419,7 @@ function toggleFavorite(id, fromModal, btnEl) {
   if (adding) state.favorites.push(id); else state.favorites.splice(idx, 1);
   localStorage.setItem("sm_favorites", JSON.stringify(state.favorites));
   showToast(adding ? t.added_fav : t.removed_fav);
+  
 
   if (btnEl) {
     btnEl.classList.toggle("is-fav", adding);
@@ -434,6 +436,8 @@ function toggleFavFilter() {
   favFilterBtn.classList.toggle("active", state.showFavoritesOnly);
   renderMenu();
 }
+
+
 
 /* ---------------------------------------------------------
    12) PRODUCT MODAL
