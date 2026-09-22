@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>لوحة التحكم | سوبر منيو</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap">
+  <style>
+    :root {
+      --navy: #0B1D3A; --navy-deep: #050D1D; --navy-mid: #12274A;
+      --cream: #F6F1E3; --cream-warm: #EFE6CE;
+      --gold: #C9A24B; --gold-deep: #9C7A2F;
+      --surface: #FFFFFF; --text: #201C14; --muted: #766A52; --border: #E7DCC1;
+      --danger: #B3261E; --ok: #2F5233;
+      --radius: 14px;
+      --font: 'Cairo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    }
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    body { margin: 0; font-family: var(--font); background: var(--cream); color: var(--text); font-size: 16px; line-height: 1.5; }
+    button { font: inherit; cursor: pointer; border: 0; background: none; color: inherit; }
+    input, select, textarea { font: inherit; color: inherit; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+    /* ---------- أزرار ---------- */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 18px;
+           border-radius: 12px; font-weight: 700; background: var(--navy); color: #fff; transition: background .15s; }
+    .btn:hover { background: var(--navy-mid); }
+    .btn:disabled { opacity: .5; cursor: not-allowed; }
+    .btn.secondary { background: var(--surface); color: var(--navy); border: 1.5px solid var(--border); }
+    .btn.secondary:hover { border-color: var(--gold); background: var(--surface); }
+    .btn.danger { background: var(--danger); }
+    .btn.gold { background: var(--gold); color: var(--navy-deep); }
+    .btn.gold:hover { background: #d6b25f; }
+    .link-btn { color: var(--danger); font-weight: 600; padding: 6px 0; text-decoration: underline; }
+
+    /* ---------- تسجيل الدخول ---------- */
+    #login-view { min-height: 100vh; display: grid; place-items: center; padding: 20px; background: var(--navy); }
+    .login-card { width: 100%; max-width: 380px; background: var(--surface); border-radius: 20px; padding: 28px; }
+    .login-card h1 { margin: 0 0 4px; font-size: 1.5rem; color: var(--navy); }
+    .login-card p { margin: 0 0 20px; color: var(--muted); }
+    .error-text { color: var(--danger); min-height: 1.4em; margin: 0 0 8px; font-weight: 600; }
+
+    /* ---------- حقول ---------- */
+    .field { display: grid; gap: 6px; margin-bottom: 14px; }
+    .field > label, .field > .label { font-weight: 700; font-size: .95rem; }
+    .field small { color: var(--muted); }
+    .field input[type=text], .field input[type=email], .field input[type=password], .field input[type=url],
+    .field select, .field textarea {
+      width: 100%; padding: 10px 12px; border: 1.5px solid var(--border); border-radius: 10px; background: #fff; min-height: 44px;
+    }
+    .field textarea { resize: vertical; min-height: 72px; }
+    .field input[type=color] { width: 64px; height: 44px; padding: 2px; border: 1.5px solid var(--border); border-radius: 10px; background: #fff; }
+    .ltr { direction: ltr; text-align: left; }
+    .two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .check { display: flex; align-items: center; gap: 10px; font-weight: 700; min-height: 44px; }
+    .check input { width: 22px; height: 22px; accent-color: var(--navy); }
+
+    /* ---------- الشريط العلوي ---------- */
+    .topbar { position: sticky; top: 0; z-index: 20; background: var(--navy); color: #fff; }
+    .topbar-inner { max-width: 1100px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+    .brand { font-weight: 800; font-size: 1.15rem; color: var(--gold); margin-inline-end: 8px; }
+    .tabs { display: flex; gap: 6px; flex: 1 1 auto; }
+    .tab { padding: 8px 16px; border-radius: 10px; font-weight: 700; color: #cfd6e4; min-height: 44px; }
+    .tab:hover { background: var(--navy-mid); color: #fff; }
+    .tab.active { background: var(--gold); color: var(--navy-deep); }
+    .top-actions { display: flex; align-items: center; gap: 10px; font-size: .9rem; }
+    .top-actions a, .top-actions button { color: #cfd6e4; padding: 8px 10px; border-radius: 8px; min-height: 44px; display: inline-flex; align-items: center; text-decoration: none; }
+    .top-actions a:hover, .top-actions button:hover { background: var(--navy-mid); color: #fff; }
+    #who { color: #9fb0cc; direction: ltr; }
+
+    main { max-width: 1100px; margin: 0 auto; padding: 20px 16px 80px; }
+    h2 { margin: 0; font-size: 1.25rem; color: var(--navy); }
+    .panel-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; flex-wrap: wrap; }
+    .tip { color: var(--muted); margin: 0 0 14px; }
+
+    /* ---------- تاب الأصناف ---------- */
+    .items-layout { display: grid; grid-template-columns: 250px 1fr; gap: 20px; align-items: start; }
+    .side { position: sticky; top: 76px; display: grid; gap: 10px; }
+    .search { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 12px; background: #fff; min-height: 44px; }
+    .cat-nav { display: grid; gap: 4px; max-height: calc(100vh - 220px); overflow: auto; padding-inline-end: 2px; }
+    .chip { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 9px 12px; border-radius: 10px;
+            text-align: start; font-weight: 600; background: transparent; min-height: 42px; }
+    .chip:hover { background: var(--cream-warm); }
+    .chip.active { background: var(--navy); color: #fff; }
+    .chip .count { font-size: .8rem; opacity: .7; }
+
+    .list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .row { display: flex; align-items: center; gap: 12px; background: var(--surface); border: 1px solid var(--border);
+           border-radius: var(--radius); padding: 10px 12px; flex-wrap: wrap; }
+    .row.off .row-main, .row.off .thumb-box { opacity: .5; }
+    .handle { width: 28px; height: 44px; display: grid; place-items: center; color: var(--muted); cursor: grab; touch-action: none; flex: none; }
+    .handle:active { cursor: grabbing; }
+    .thumb-box { width: 56px; height: 56px; border-radius: 10px; background: var(--cream-warm); overflow: hidden; flex: none;
+                 border: 2px dashed transparent; display: grid; place-items: center; font-size: 11px; color: var(--muted); text-align: center; line-height: 1.2; cursor: pointer; }
+    .thumb-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb-box.over { border-color: var(--gold); background: #fff6dc; }
+    .thumb-box.busy { opacity: .6; }
+    .row-main { flex: 1 1 150px; min-width: 0; }
+    .row-name { font-weight: 700; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .row-sub { font-size: .85rem; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .badge { display: inline-block; font-size: .72rem; font-weight: 700; padding: 1px 8px; border-radius: 99px; background: var(--cream-warm); color: var(--gold-deep); margin-inline-start: 6px; }
+    .price { display: inline-flex; align-items: center; gap: 6px; }
+    .price input { width: 84px; padding: 8px 10px; border: 1.5px solid var(--border); border-radius: 10px; text-align: center; font-weight: 700; min-height: 44px; direction: ltr; background: #fff; }
+    .price span { color: var(--muted); font-size: .85rem; }
+    .switch { position: relative; display: inline-flex; align-items: center; gap: 8px; cursor: pointer; min-height: 44px; }
+    .switch input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+    .track { width: 44px; height: 26px; border-radius: 99px; background: #c9c2ad; position: relative; transition: background .15s; flex: none; }
+    .track::after { content: ""; position: absolute; top: 3px; inset-inline-start: 3px; width: 20px; height: 20px; border-radius: 50%; background: #fff; transition: transform .15s; }
+    .switch input:checked + .track { background: var(--ok); }
+    .switch input:checked + .track::after { transform: translateX(-18px); }
+    .switch input:focus-visible + .track { outline: 3px solid var(--gold); outline-offset: 2px; }
+    .switch-text { font-size: .85rem; font-weight: 700; min-width: 38px; }
+    .color-dot { width: 22px; height: 22px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px var(--border); flex: none; }
+    .ghost { opacity: .35; }
+    .empty { text-align: center; color: var(--muted); padding: 40px 16px; background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius); }
+
+    /* ---------- رفع الصور ---------- */
+    .dz { border: 2px dashed var(--border); border-radius: 14px; background: #fff; min-height: 150px; display: grid; place-items: center;
+          text-align: center; cursor: pointer; position: relative; overflow: hidden; padding: 12px; }
+    .dz:hover, .dz.over { border-color: var(--gold); background: #fff9ea; }
+    .dz-hint { display: grid; gap: 2px; color: var(--muted); }
+    .dz-hint strong { color: var(--navy); }
+    .dz-img { max-width: 100%; max-height: 220px; border-radius: 10px; display: block; }
+    .dz-busy { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(255,255,255,.85); font-weight: 700; }
+
+    /* ---------- نوافذ التعديل ---------- */
+    dialog { border: 0; padding: 0; border-radius: 20px; width: calc(100% - 24px); max-width: 600px; color: var(--text); background: var(--cream); }
+    dialog::backdrop { background: rgba(5, 13, 29, .6); }
+    dialog.small { max-width: 400px; }
+    .dlg-head { padding: 16px 20px; background: var(--navy); color: #fff; font-weight: 800; font-size: 1.1rem; }
+    .dlg-body { padding: 20px; max-height: calc(100vh - 190px); overflow: auto; }
+    .dlg-foot { display: flex; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--border); background: var(--cream-warm); align-items: center; flex-wrap: wrap; }
+    .dlg-foot .grow { flex: 1; }
+    .dlg-msg { padding: 22px 20px 6px; font-weight: 600; }
+
+    /* ---------- الإعدادات ---------- */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; max-width: 700px; }
+
+    /* ---------- رسالة سريعة ---------- */
+    .toast { position: fixed; bottom: 24px; inset-inline: 0; margin-inline: auto; width: max-content; max-width: calc(100% - 32px);
+             padding: 12px 20px; border-radius: 12px; background: var(--ok); color: #fff; font-weight: 700;
+             box-shadow: 0 8px 30px rgba(0,0,0,.25); opacity: 0; transform: translateY(20px); pointer-events: none; transition: .25s; z-index: 100; }
+    .toast.err { background: var(--danger); }
+    .toast.show { opacity: 1; transform: none; }
+
+    @media (max-width: 800px) {
+      .items-layout { grid-template-columns: 1fr; }
+      .side { position: static; }
+      .cat-nav { display: flex; overflow-x: auto; max-height: none; gap: 6px; padding-bottom: 6px; }
+      .chip { flex: none; background: #fff; border: 1px solid var(--border); }
+      .two { grid-template-columns: 1fr; }
+      .tabs { order: 3; flex-basis: 100%; }
+      .tab { flex: 1; text-align: center; padding-inline: 8px; }
+      #who { display: none; }
+    }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body>
+
+<!-- ============ تسجيل الدخول ============ -->
+<div id="login-view">
+  <form class="login-card" id="login-form">
+    <h1>لوحة التحكم</h1>
+    <p>سجّل دخولك لتعديل المنيو</p>
+    <div class="field">
+      <label for="email">الإيميل</label>
+      <input id="email" class="ltr" type="email" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="password">الباسورد</label>
+      <input id="password" class="ltr" type="password" autocomplete="current-password" required>
+    </div>
+    <p class="error-text" id="login-error" role="alert"></p>
+    <button class="btn" id="login-btn" type="submit" style="width:100%">دخول</button>
+  </form>
+</div>
+
+<!-- ============ اللوحة ============ -->
+<div id="app-view" hidden>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <span class="brand">لوحة التحكم</span>
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-tab="items" role="tab" aria-selected="true">الأصناف</button>
+        <button class="tab" data-tab="cats" role="tab" aria-selected="false">الأقسام</button>
+        <button class="tab" data-tab="settings" role="tab" aria-selected="false">إعدادات المطعم</button>
+      </nav>
+      <div class="top-actions">
+        <span id="who"></span>
+        <a href="index.html" target="_blank" rel="noopener">عرض المنيو</a>
+        <button id="logout-btn" type="button">خروج</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ---- الأصناف ---- -->
+    <section id="tab-items" class="panel">
+      <div class="items-layout">
+        <aside class="side">
+          <input id="search" class="search" type="search" placeholder="ابحث عن صنف…" aria-label="بحث">
+          <nav id="cat-nav" class="cat-nav" aria-label="الأقسام"></nav>
+        </aside>
+        <div>
+          <div class="panel-head">
+            <h2 id="items-title"></h2>
+            <button class="btn gold" id="add-item" type="button">+ صنف جديد</button>
+          </div>
+          <p class="tip" id="items-tip">اسحب الصنف من الأيقونة اللي على اليمين لتغيير ترتيبه. اسحب صورة وارميها على مربع الصورة لتغييرها.</p>
+          <ul id="items-list" class="list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---- الأقسام ---- -->
+    <section id="tab-cats" class="panel" hidden>
+      <div class="panel-head">
+        <h2>الأقسام</h2>
+        <button class="btn gold" id="add-cat" type="button">+ قسم جديد</button>
+      </div>
+      <p class="tip">اسحب القسم لتغيير ترتيبه في المنيو.</p>
+      <ul id="cats-list" class="list"></ul>
+    </section>
+
+    <!-- ---- الإعدادات ---- -->
+    <section id="tab-settings" class="panel" hidden>
+      <div class="panel-head"><h2>إعدادات المطعم</h2></div>
+      <form class="card" id="settings-form">
+        <div class="two">
+          <div class="field"><label for="s-name-ar">اسم المطعم (عربي)</label><input id="s-name-ar" type="text"></div>
+          <div class="field"><label for="s-name-en">اسم المطعم (English)</label><input id="s-name-en" class="ltr" type="text"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="s-tag-ar">الجملة تحت الاسم (عربي)</label><input id="s-tag-ar" type="text"></div>
+          <div class="field"><label for="s-tag-en">الجملة تحت الاسم (English)</label><input id="s-tag-en" class="ltr" type="text"></div>
+        </div>
+        <div class="field"><span class="label">اللوجو</span><div id="s-logo"></div></div>
+        <div class="two">
+          <div class="field"><label for="s-phone">رقم التليفون</label><input id="s-phone" class="ltr" type="text" inputmode="tel" placeholder="01012345678"></div>
+          <div class="field"><label for="s-whatsapp">رقم الواتساب</label><input id="s-whatsapp" class="ltr" type="text" inputmode="tel" placeholder="201012345678"><small>بالكود الدولي، من غير + أو مسافات</small></div>
+        </div>
+        <div class="field"><label for="s-instagram">رابط الإنستجرام</label><input id="s-instagram" class="ltr" type="url" placeholder="https://instagram.com/..."></div>
+        <div class="field"><label for="s-location">رابط الموقع على الخريطة</label><input id="s-location" class="ltr" type="url" placeholder="https://maps.google.com/..."></div>
+        <button class="btn" type="submit">حفظ الإعدادات</button>
+      </form>
+    </section>
+  </main>
+</div>
+
+<!-- ============ نافذة الصنف ============ -->
+<dialog id="item-dlg">
+  <form id="item-form">
+    <div class="dlg-head" id="item-dlg-title">صنف</div>
+    <div class="dlg-body">
+      <div class="two">
+        <div class="field"><label for="i-name-ar">الاسم (عربي) *</label><input id="i-name-ar" type="text" required></div>
+        <div class="field"><label for="i-name-en">الاسم (English)</label><input id="i-name-en" class="ltr" type="text"></div>
+      </div>
+      <div class="two">
+        <div class="field"><label for="i-desc-ar">الوصف (عربي)</label><textarea id="i-desc-ar"></textarea></div>
+        <div class="field"><label for="i-desc-en">الوصف (English)</label><textarea id="i-desc-en" class="ltr"></textarea></div>
+      </div>
+      <div class="two">
+        <div class="field"><label for="i-price">السعر (ج.م) *</label><input id="i-price" class="ltr" type="text" inputmode="decimal" required></div>
+        <div class="field"><label for="i-category">القسم</label><select id="i-category"></select></div>
+      </div>
+      <div class="field"><label for="i-tag">علامة مميزة</label><select id="i-tag"></select></div>
+      <div class="field"><span class="label">الصورة</span><div id="i-image"></div></div>
+      <label class="check"><input type="checkbox" id="i-available"> متاح للطلب</label>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn" type="submit">حفظ</button>
+      <button class="btn secondary" type="button" data-close>إلغاء</button>
+      <span class="grow"></span>
+      <button class="link-btn" type="button" id="item-delete">حذف الصنف</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ============ نافذة القسم ============ -->
+<dialog id="cat-dlg">
+  <form id="cat-form">
+    <div class="dlg-head" id="cat-dlg-title">قسم</div>
+    <div class="dlg-body">
+      <div class="two">
+        <div class="field"><label for="c-ar">الاسم (عربي) *</label><input id="c-ar" type="text" required></div>
+        <div class="field"><label for="c-en">الاسم (English)</label><input id="c-en" class="ltr" type="text"></div>
+      </div>
+      <div class="field"><label for="c-color">لون القسم</label><input id="c-color" type="color" value="#C9A24B"></div>
+      <div class="field"><span class="label">صورة القسم</span><div id="c-image"></div></div>
+    </div>
+    <div class="dlg-foot">
+      <button class="btn" type="submit">حفظ</button>
+      <button class="btn secondary" type="button" data-close>إلغاء</button>
+      <span class="grow"></span>
+      <button class="link-btn" type="button" id="cat-delete">حذف القسم</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ============ نافذة التأكيد ============ -->
+<dialog id="confirm-dlg" class="small">
+  <form method="dialog">
+    <p class="dlg-msg" id="confirm-msg"></p>
+    <div class="dlg-foot">
+      <button class="btn danger" id="confirm-ok" value="ok">حذف</button>
+      <button class="btn secondary" value="cancel">إلغاء</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<!-- مكتبة السحب والإفلات -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.2/Sortable.min.js"></script>
+
+<script type="module">
+  import { db, auth } from "./firebase-config.js";
+  import { CLOUDINARY } from "./cloudinary-config.js";
+  import { signInWithEmailAndPassword, signOut, onAuthStateChanged }
+    from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  import { collection, getDocs, getDoc, doc, setDoc, deleteDoc, writeBatch }
+    from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  /* =========================================================
+     أدوات صغيرة
+  ========================================================= */
+  const $  = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const esc = (s) => String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+
+  const GRIP = `<svg width="14" height="20" viewBox="0 0 14 20" aria-hidden="true" fill="currentColor"><circle cx="4" cy="4" r="1.6"/><circle cx="10" cy="4" r="1.6"/><circle cx="4" cy="10" r="1.6"/><circle cx="10" cy="10" r="1.6"/><circle cx="4" cy="16" r="1.6"/><circle cx="10" cy="16" r="1.6"/></svg>`;
+
+  const TAGS = [
+    ["", "بدون علامة"],
+    ["NEW", "NEW — جديد"],
+    ["BEST SELLER", "BEST SELLER — الأكثر مبيعاً"],
+    ["CHEF'S PICK", "CHEF'S PICK — اختيار الشيف"],
+    ["SIGNATURE", "SIGNATURE — التوقيع"]
+  ];
+
+  // كل الداتا اللي محملة من Firebase
+  const state = { cats: [], items: [], settings: {}, activeCat: null, search: "" };
+
+  let toastTimer;
+  function toast(msg, kind = "ok") {
+    const t = $("#toast");
+    t.textContent = msg;
+    t.className = "toast show " + (kind === "err" ? "err" : "");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+  }
+
+  function friendlyError(err) {
+    const c = String(err?.code || err?.message || "");
+    if (c.includes("permission-denied")) return "مفيش صلاحية للحفظ. اتأكد إنك داخل بحساب صاحب المطعم.";
+    if (c.includes("unavailable") || c.includes("network") || c.includes("Failed to fetch")) return "مفيش اتصال بالإنترنت. جرّب تاني.";
+    if (c === "cloudinary-not-configured") return "رفع الصور لسه مش متظبط. راجع ملف cloudinary-config.js";
+    if (c === "not-image") return "الملف ده مش صورة.";
+    if (c === "too-big") return "الصورة كبيرة قوي (الحد الأقصى 10 ميجا).";
+    return "حصلت مشكلة: " + c;
+  }
+
+  // بيشغّل عملية حفظ ويعرض رسالة نجاح أو خطأ بشكل ودود
+  async function run(fn, okMsg) {
+    try { await fn(); if (okMsg) toast(okMsg); return true; }
+    catch (e) { console.error(e); toast(friendlyError(e), "err"); return false; }
+  }
+
+  function parsePrice(v) {
+    const s = String(v ?? "").trim().replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d)).replace(",", ".");
+    if (s === "") return null;
+    const n = Number(s);
+    return Number.isFinite(n) && n >= 0 ? n : null;
+  }
+
+  function askConfirm(message, okText = "حذف") {
+    return new Promise(resolve => {
+      const dlg = $("#confirm-dlg");
+      $("#confirm-msg").textContent = message;
+      $("#confirm-ok").textContent = okText;
+      dlg.returnValue = "";
+      dlg.addEventListener("close", () => resolve(dlg.returnValue === "ok"), { once: true });
+      dlg.showModal();
+    });
+  }
+
+  const catName = (id) => state.cats.find(c => c.id === id)?.ar || id;
+  const countByCat = () => state.items.reduce((m, i) => (m[i.category] = (m[i.category] || 0) + 1, m), {});
+  const hasFiles = (e) => [...(e.dataTransfer?.types || [])].includes("Files");
+
+  // منع المتصفح من فتح الصورة لو رميتها بالغلط برة مربع الرفع
+  window.addEventListener("dragover", e => { if (hasFiles(e)) e.preventDefault(); });
+  window.addEventListener("drop", e => { if (hasFiles(e)) e.preventDefault(); });
+
+  /* =========================================================
+     رفع الصور على Cloudinary
+  ========================================================= */
+  async function uploadImage(file) {
+    if (!CLOUDINARY.cloudName || CLOUDINARY.cloudName.startsWith("PASTE")) throw new Error("cloudinary-not-configured");
+    if (!file || !file.type.startsWith("image/")) throw new Error("not-image");
+    if (file.size > 10 * 1024 * 1024) throw new Error("too-big");
+
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", CLOUDINARY.uploadPreset);
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/image/upload`, { method: "POST", body: fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error?.message || "upload-failed");
+    return data.secure_url;   // الرابط الأصلي للصورة
+  }
+
+  // بنضيف على الرابط تعليمات: صيغة أخف + جودة تلقائية + عرض محدد (الموقع يبقى أسرع)
+  function cldSize(url, width) {
+    if (!url || !url.includes("res.cloudinary.com") || !url.includes("/upload/")) return url || "";
+    return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width}/`);
+  }
+
+  /* مربع "اسحب الصورة هنا" — بيتستخدم في الصنف والقسم واللوجو */
+  function createDropzone(host) {
+    host.innerHTML = `
+      <div class="dz" tabindex="0" role="button" aria-label="اختيار صورة">
+        <img class="dz-img" alt="" hidden>
+        <div class="dz-hint"><strong>اسحب الصورة هنا</strong><span>أو اضغط لاختيارها من جهازك</span></div>
+        <div class="dz-busy" hidden>جاري رفع الصورة…</div>
+        <input type="file" accept="image/*" hidden>
+      </div>
+      <button type="button" class="link-btn dz-clear" hidden>حذف الصورة</button>`;
+    const dz = $(".dz", host), img = $(".dz-img", host), hint = $(".dz-hint", host),
+          busy = $(".dz-busy", host), input = $("input", host), clear = $(".dz-clear", host);
+    let value = "", changed = false, uploading = false;
+
+    const paint = () => {
+      img.hidden = !value; hint.hidden = !!value; clear.hidden = !value;
+      if (value) img.src = value; else img.removeAttribute("src");
+    };
+    async function handleFile(file) {
+      if (!file) return;
+      uploading = true; busy.hidden = false;
+      try { value = await uploadImage(file); changed = true; paint(); }
+      catch (e) { console.error(e); toast(friendlyError(e), "err"); }
+      finally { uploading = false; busy.hidden = true; }
+    }
+    input.addEventListener("click", e => e.stopPropagation());
+    dz.addEventListener("click", () => input.click());
+    dz.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+    input.addEventListener("change", () => { handleFile(input.files[0]); input.value = ""; });
+    dz.addEventListener("dragover", e => { e.preventDefault(); dz.classList.add("over"); });
+    dz.addEventListener("dragleave", () => dz.classList.remove("over"));
+    dz.addEventListener("drop", e => { e.preventDefault(); dz.classList.remove("over"); handleFile(e.dataTransfer.files[0]); });
+    clear.addEventListener("click", () => { value = ""; changed = true; paint(); });
+
+    return {
+      get: () => value,
+      set: (u) => { value = u || ""; changed = false; paint(); },
+      get changed() { return changed; },
+      get uploading() { return uploading; }
+    };
+  }
+
+  const itemDz = createDropzone($("#i-image"));
+  const catDz  = createDropzone($("#c-image"));
+  const logoDz = createDropzone($("#s-logo"));
+
+  /* =========================================================
+     تسجيل الدخول
+  ========================================================= */
+  function loginError(code) {
+    if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") return "الإيميل أو الباسورد غلط.";
+    if (code === "auth/too-many-requests") return "محاولات كتير. استنى شوية وجرّب تاني.";
+    if (code === "auth/network-request-failed") return "مفيش اتصال بالإنترنت.";
+    return "مقدرتش أسجل دخولك (" + code + ")";
+  }
+
+  $("#login-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const btn = $("#login-btn");
+    btn.disabled = true; $("#login-error").textContent = "";
+    try { await signInWithEmailAndPassword(auth, $("#email").value.trim(), $("#password").value); }
+    catch (err) { $("#login-error").textContent = loginError(err.code); }
+    finally { btn.disabled = false; }
+  });
+
+  $("#logout-btn").addEventListener("click", () => signOut(auth));
+
+  onAuthStateChanged(auth, async (user) => {
+    $("#login-view").hidden = !!user;
+    $("#app-view").hidden = !user;
+    if (user) {
+      $("#who").textContent = user.email;
+      await run(loadAll);
+    }
+  });
+
+  /* =========================================================
+     تحميل الداتا
+  ========================================================= */
+  async function loadAll() {
+    const [c, i, s] = await Promise.all([
+      getDocs(collection(db, "categories")),
+      getDocs(collection(db, "items")),
+      getDoc(doc(db, "settings", "main"))
+    ]);
+    state.cats = c.docs.map(d => d.data()).sort((a, b) => a.order - b.order);
+    state.items = i.docs.map(d => d.data()).sort((a, b) => a.order - b.order);
+    state.settings = s.exists() ? s.data() : {};
+    if (!state.cats.some(x => x.id === state.activeCat)) state.activeCat = state.cats[0]?.id ?? null;
+    renderAll();
+  }
+
+  function renderAll() {
+    renderCatNav();
+    renderItems();
+    renderCats();
+    fillSettings();
+  }
+
+  /* =========================================================
+     التابات
+  ========================================================= */
+  $$(".tab").forEach(b => b.addEventListener("click", () => {
+    $$(".tab").forEach(t => { const on = t === b; t.classList.toggle("active", on); t.setAttribute("aria-selected", on); });
+    $$(".panel").forEach(p => p.hidden = p.id !== "tab-" + b.dataset.tab);
+  }));
+
+  $$("[data-close]").forEach(b => b.addEventListener("click", () => b.closest("dialog").close()));
+
+  /* =========================================================
+     الأصناف — القايمة
+  ========================================================= */
+  let itemsSortable = null;
+
+  function renderCatNav() {
+    const counts = countByCat();
+    $("#cat-nav").innerHTML = state.cats.map(c => `
+      <button type="button" class="chip ${c.id === state.activeCat && !state.search ? "active" : ""}" data-cat="${esc(c.id)}">
+        <span>${esc(c.ar)}</span><span class="count">${counts[c.id] || 0}</span>
+      </button>`).join("");
+  }
+
+  $("#cat-nav").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-cat]");
+    if (!b) return;
+    state.activeCat = b.dataset.cat;
+    state.search = ""; $("#search").value = "";
+    renderCatNav(); renderItems();
+  });
+
+  $("#search").addEventListener("input", (e) => {
+    state.search = e.target.value;
+    renderCatNav(); renderItems();
+  });
+
+  function visibleItems() {
+    const q = state.search.trim().toLowerCase();
+    if (q) return state.items.filter(i => (i.name?.ar || "").toLowerCase().includes(q) || (i.name?.en || "").toLowerCase().includes(q));
+    return state.items.filter(i => i.category === state.activeCat);
+  }
+
+  function renderItems() {
+    const list = $("#items-list");
+    const searching = !!state.search.trim();
+    const items = visibleItems();
+
+    $("#items-title").textContent = searching ? `نتائج البحث (${items.length})` : `${catName(state.activeCat)} (${items.length})`;
+    $("#items-tip").hidden = searching;
+
+    itemsSortable?.destroy(); itemsSortable = null;
+
+    if (!items.length) {
+      list.innerHTML = `<li class="empty">${searching ? "مفيش نتايج مطابقة." : "القسم ده لسه فاضي. دوس «+ صنف جديد» عشان تضيف أول صنف."}</li>`;
+      return;
+    }
+
+    list.innerHTML = items.map(item => {
+      const on = item.available !== false;
+      return `
+      <li class="row ${on ? "" : "off"}" data-id="${item.id}">
+        ${searching ? "" : `<span class="handle" title="اسحب لتغيير الترتيب">${GRIP}</span>`}
+        <div class="thumb-box" title="اسحب صورة وارميها هنا">${item.image ? `<img src="${esc(item.image)}" alt="" loading="lazy">` : "اسحب<br>صورة"}</div>
+        <div class="row-main">
+          <div class="row-name">${esc(item.name?.ar)}${item.tag ? `<span class="badge">${esc(item.tag)}</span>` : ""}</div>
+          <div class="row-sub">${searching ? esc(catName(item.category)) + " · " : ""}<span dir="ltr">${esc(item.name?.en)}</span></div>
+        </div>
+        <label class="price"><input class="price-input" type="text" inputmode="decimal" value="${esc(item.price)}" aria-label="السعر"><span>ج.م</span></label>
+        <label class="switch"><input type="checkbox" class="avail-input" ${on ? "checked" : ""}><span class="track" aria-hidden="true"></span><span class="switch-text">${on ? "متاح" : "مخفي"}</span></label>
+        <button type="button" class="btn secondary edit-item">تعديل</button>
+      </li>`;
+    }).join("");
+
+    // رفع صورة بالسحب على مربع الصورة
+    $$(".thumb-box", list).forEach(box => {
+      const item = state.items.find(i => i.id === Number(box.closest(".row").dataset.id));
+      box.addEventListener("dragover", e => { if (hasFiles(e)) { e.preventDefault(); e.stopPropagation(); box.classList.add("over"); } });
+      box.addEventListener("dragleave", () => box.classList.remove("over"));
+      box.addEventListener("drop", async (e) => {
+        if (!hasFiles(e)) return;
+        e.preventDefault(); e.stopPropagation();
+        box.classList.remove("over"); box.classList.add("busy");
+        await run(async () => {
+          const raw = await uploadImage(e.dataTransfer.files[0]);
+          await patchItem(item, { image: cldSize(raw, 800) });
+        }, "تم تغيير الصورة");
+        box.classList.remove("busy");
+      });
+    });
+
+    if (!searching && window.Sortable) {
+      itemsSortable = Sortable.create(list, {
+        handle: ".handle", animation: 160, ghostClass: "ghost",
+        onEnd: onItemsReordered
+      });
+    }
+  }
+
+  async function patchItem(item, patch) {
+    await setDoc(doc(db, "items", String(item.id)), patch, { merge: true });
+    Object.assign(item, patch);
+    renderCatNav(); renderItems();
+  }
+
+  // تعديل السعر / الإتاحة / فتح التعديل — من غير ما نربط لسه بكل صف لوحده (Event delegation)
+  $("#items-list").addEventListener("change", async (e) => {
+    const li = e.target.closest(".row");
+    if (!li) return;
+    const item = state.items.find(i => i.id === Number(li.dataset.id));
+    if (!item) return;
+
+    if (e.target.matches(".price-input")) {
+      const price = parsePrice(e.target.value);
+      if (price === null) { toast("اكتب سعر صحيح (أرقام فقط)", "err"); e.target.value = item.price; return; }
+      if (price === item.price) { e.target.value = item.price; return; }
+      const ok = await run(() => patchItem(item, { price }), "تم تغيير السعر");
+      if (!ok) e.target.value = item.price;
+    }
+    if (e.target.matches(".avail-input")) {
+      const available = e.target.checked;
+      const ok = await run(() => patchItem(item, { available }), available ? "الصنف ظاهر دلوقتي" : "الصنف اتخبّى من المنيو");
+      if (!ok) e.target.checked = !available;
+    }
+  });
+
+  $("#items-list").addEventListener("click", (e) => {
+    const li = e.target.closest(".row");
+    if (!li) return;
+    if (e.target.closest(".edit-item") || e.target.closest(".thumb-box")) {
+      openItemDialog(state.items.find(i => i.id === Number(li.dataset.id)));
+    }
+  });
+
+  // بعد السحب: نوزّع نفس قيم الترتيب القديمة على الترتيب الجديد
+  async function onItemsReordered() {
+    const inCat = $$("#items-list > li").map(li => state.items.find(i => i.id === Number(li.dataset.id)));
+    const slots = inCat.map(i => i.order).sort((a, b) => a - b);
+    const changes = inCat.map((item, idx) => ({ item, order: slots[idx] })).filter(x => x.item.order !== x.order);
+    if (!changes.length) return;
+
+    const ok = await run(async () => {
+      const batch = writeBatch(db);
+      changes.forEach(x => batch.update(doc(db, "items", String(x.item.id)), { order: x.order }));
+      await batch.commit();
+      changes.forEach(x => { x.item.order = x.order; });
+      state.items.sort((a, b) => a.order - b.order);
+    }, "تم حفظ الترتيب");
+    if (!ok) renderItems();   // لو فشل نرجّع الشكل القديم
+  }
+
+  /* =========================================================
+     الأصناف — نافذة الإضافة والتعديل
+  ========================================================= */
+  const itemF = {
+    nameAr: $("#i-name-ar"), nameEn: $("#i-name-en"), descAr: $("#i-desc-ar"), descEn: $("#i-desc-en"),
+    price: $("#i-price"), category: $("#i-category"), tag: $("#i-tag"), available: $("#i-available")
+  };
+  let editingItem = null;
+
+  function openItemDialog(item) {
+    editingItem = item || null;
+    $("#item-dlg-title").textContent = item ? "تعديل الصنف" : "صنف جديد";
+    itemF.nameAr.value = item?.name?.ar ?? "";
+    itemF.nameEn.value = item?.name?.en ?? "";
+    itemF.descAr.value = item?.description?.ar ?? "";
+    itemF.descEn.value = item?.description?.en ?? "";
+    itemF.price.value = item?.price ?? "";
+    itemF.category.innerHTML = state.cats.map(c => `<option value="${esc(c.id)}">${esc(c.ar)}</option>`).join("");
+    itemF.category.value = item?.category ?? state.activeCat ?? state.cats[0]?.id ?? "";
+
+    const tags = [...TAGS];
+    if (item?.tag && !tags.some(t => t[0] === item.tag)) tags.push([item.tag, item.tag]);
+    itemF.tag.innerHTML = tags.map(([v, l]) => `<option value="${esc(v)}">${esc(l)}</option>`).join("");
+    itemF.tag.value = item?.tag ?? "";
+
+    itemF.available.checked = item ? item.available !== false : true;
+    itemDz.set(item?.image ?? "");
+    $("#item-delete").hidden = !item;
+    $("#item-dlg").showModal();
+    itemF.nameAr.focus();
+  }
+
+  $("#add-item").addEventListener("click", () => {
+    if (!state.cats.length) { toast("أضف قسم الأول من تاب «الأقسام»", "err"); return; }
+    openItemDialog(null);
+  });
+
+  $("#item-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (itemDz.uploading) { toast("استنى لحد ما الصورة تخلص رفع", "err"); return; }
+
+    const nameAr = itemF.nameAr.value.trim();
+    if (!nameAr) { toast("اكتب اسم الصنف", "err"); itemF.nameAr.focus(); return; }
+    const price = parsePrice(itemF.price.value);
+    if (price === null) { toast("اكتب سعر صحيح (أرقام فقط)", "err"); itemF.price.focus(); return; }
+
+    const isNew = !editingItem;
+    const catChanged = !isNew && editingItem.category !== itemF.category.value;
+    const maxOrder = state.items.reduce((m, i) => Math.max(m, i.order ?? 0), -1);
+    const maxId = state.items.reduce((m, i) => Math.max(m, i.id ?? 0), 0);
+
+    const data = {
+      id: isNew ? maxId + 1 : editingItem.id,
+      category: itemF.category.value,
+      name: { ar: nameAr, en: itemF.nameEn.value.trim() || nameAr },
+      description: { ar: itemF.descAr.value.trim(), en: itemF.descEn.value.trim() || itemF.descAr.value.trim() },
+      price,
+      tag: itemF.tag.value,
+      image: itemDz.changed ? cldSize(itemDz.get(), 800) : itemDz.get(),
+      available: itemF.available.checked,
+      order: (isNew || catChanged) ? maxOrder + 1 : editingItem.order
+    };
+
+    const ok = await run(async () => {
+      await setDoc(doc(db, "items", String(data.id)), data, { merge: true });
+      if (isNew) state.items.push(data);
+      else Object.assign(editingItem, data);
+      state.items.sort((a, b) => a.order - b.order);
+      if (isNew) { state.activeCat = data.category; state.search = ""; $("#search").value = ""; }
+    }, isNew ? "تمت إضافة الصنف" : (catChanged ? "اتحفظ الصنف واتنقل لقسم " + catName(data.category) : "تم حفظ الصنف"));
+
+    if (ok) { $("#item-dlg").close(); renderAll(); }
+  });
+
+  $("#item-delete").addEventListener("click", async () => {
+    if (!editingItem) return;
+    const yes = await askConfirm(`متأكد إنك عايز تحذف «${editingItem.name?.ar}»؟ الحذف مش بيرجع.`);
+    if (!yes) return;
+    const target = editingItem;
+    const ok = await run(async () => {
+      await deleteDoc(doc(db, "items", String(target.id)));
+      state.items = state.items.filter(i => i.id !== target.id);
+    }, "تم حذف الصنف");
+    if (ok) { $("#item-dlg").close(); renderAll(); }
+  });
+
+  /* =========================================================
+     الأقسام
+  ========================================================= */
+  let catsSortable = null;
+
+  function renderCats() {
+    const list = $("#cats-list");
+    const counts = countByCat();
+    catsSortable?.destroy(); catsSortable = null;
+
+    if (!state.cats.length) {
+      list.innerHTML = `<li class="empty">لسه مفيش أقسام. دوس «+ قسم جديد».</li>`;
+      return;
+    }
+
+    list.innerHTML = state.cats.map(c => `
+      <li class="row" data-id="${esc(c.id)}">
+        <span class="handle" title="اسحب لتغيير الترتيب">${GRIP}</span>
+        <div class="thumb-box">${c.thumb ? `<img src="${esc(c.thumb)}" alt="" loading="lazy">` : ""}</div>
+        <div class="row-main">
+          <div class="row-name">${esc(c.ar)}</div>
+          <div class="row-sub"><span dir="ltr">${esc(c.en)}</span> · ${counts[c.id] || 0} صنف</div>
+        </div>
+        <span class="color-dot" style="background:${esc(c.color || "#ccc")}" title="لون القسم"></span>
+        <button type="button" class="btn secondary edit-cat">تعديل</button>
+      </li>`).join("");
+
+    if (window.Sortable) {
+      catsSortable = Sortable.create(list, { handle: ".handle", animation: 160, ghostClass: "ghost", onEnd: onCatsReordered });
+    }
+  }
+
+  $("#cats-list").addEventListener("click", (e) => {
+    const li = e.target.closest(".row");
+    if (li && e.target.closest(".edit-cat")) openCatDialog(state.cats.find(c => c.id === li.dataset.id));
+  });
+
+  // ترتيب الأقسام + رقم القسم اللي بيظهر في المنيو (01 / 25)
+  async function saveCatsOrder(newList) {
+    const changes = newList.map((c, idx) => ({ c, order: idx, number: idx + 1 }))
+      .filter(x => x.c.order !== x.order || x.c.number !== x.number);
+    if (!changes.length) return;
+    const batch = writeBatch(db);
+    changes.forEach(x => batch.update(doc(db, "categories", x.c.id), { order: x.order, number: x.number }));
+    await batch.commit();
+    changes.forEach(x => { x.c.order = x.order; x.c.number = x.number; });
+    state.cats = newList;
+  }
+
+  async function onCatsReordered() {
+    const ids = $$("#cats-list > li").map(li => li.dataset.id);
+    const newList = ids.map(id => state.cats.find(c => c.id === id));
+    const ok = await run(() => saveCatsOrder(newList), "تم حفظ ترتيب الأقسام");
+    if (ok) renderCatNav(); else renderCats();
+  }
+
+  const catF = { ar: $("#c-ar"), en: $("#c-en"), color: $("#c-color") };
+  let editingCat = null;
+
+  function openCatDialog(cat) {
+    editingCat = cat || null;
+    $("#cat-dlg-title").textContent = cat ? "تعديل القسم" : "قسم جديد";
+    catF.ar.value = cat?.ar ?? "";
+    catF.en.value = cat?.en ?? "";
+    catF.color.value = /^#[0-9a-f]{6}$/i.test(cat?.color || "") ? cat.color : "#C9A24B";
+    catDz.set(cat?.banner ?? "");
+    $("#cat-delete").hidden = !cat;
+    $("#cat-dlg").showModal();
+    catF.ar.focus();
+  }
+
+  $("#add-cat").addEventListener("click", () => openCatDialog(null));
+
+  function makeCatId(text) {
+    let base = text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "") || "cat-" + Date.now().toString(36);
+    let id = base, n = 2;
+    while (state.cats.some(c => c.id === id)) id = base + "-" + n++;
+    return id;
+  }
+
+  $("#cat-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (catDz.uploading) { toast("استنى لحد ما الصورة تخلص رفع", "err"); return; }
+    const ar = catF.ar.value.trim();
+    if (!ar) { toast("اكتب اسم القسم", "err"); catF.ar.focus(); return; }
+    const en = catF.en.value.trim() || ar;
+
+    const isNew = !editingCat;
+    const raw = catDz.get();
+    const images = catDz.changed
+      ? { banner: cldSize(raw, 1000), thumb: cldSize(raw, 240) }
+      : { banner: editingCat?.banner ?? raw, thumb: editingCat?.thumb ?? raw };
+
+    const data = {
+      ...(editingCat || { icon: "" }),
+      id: isNew ? makeCatId(catF.en.value.trim() || "") : editingCat.id,
+      ar, en, color: catF.color.value, ...images,
+      order: isNew ? state.cats.reduce((m, c) => Math.max(m, c.order ?? 0), -1) + 1 : editingCat.order,
+      number: isNew ? state.cats.length + 1 : editingCat.number
+    };
+
+    const ok = await run(async () => {
+      await setDoc(doc(db, "categories", data.id), data, { merge: true });
+      if (isNew) { state.cats.push(data); state.activeCat = data.id; }
+      else Object.assign(editingCat, data);
+    }, isNew ? "تمت إضافة القسم" : "تم حفظ القسم");
+    if (ok) { $("#cat-dlg").close(); renderAll(); }
+  });
+
+  $("#cat-delete").addEventListener("click", async () => {
+    if (!editingCat) return;
+    const n = state.items.filter(i => i.category === editingCat.id).length;
+    if (n > 0) {
+      toast(`القسم فيه ${n} صنف. انقلهم لقسم تاني أو احذفهم الأول.`, "err");
+      return;
+    }
+    const yes = await askConfirm(`متأكد إنك عايز تحذف قسم «${editingCat.ar}»؟`);
+    if (!yes) return;
+    const target = editingCat;
+    const ok = await run(async () => {
+      await deleteDoc(doc(db, "categories", target.id));
+      const rest = state.cats.filter(c => c.id !== target.id);
+      await saveCatsOrder(rest);   // بيعيد ترقيم الأقسام اللي فاضلة
+      state.cats = rest;
+      if (state.activeCat === target.id) state.activeCat = rest[0]?.id ?? null;
+    }, "تم حذف القسم");
+    if (ok) { $("#cat-dlg").close(); renderAll(); }
+  });
+
+  /* =========================================================
+     إعدادات المطعم
+  ========================================================= */
+  const setF = {
+    nameAr: $("#s-name-ar"), nameEn: $("#s-name-en"), tagAr: $("#s-tag-ar"), tagEn: $("#s-tag-en"),
+    phone: $("#s-phone"), whatsapp: $("#s-whatsapp"), instagram: $("#s-instagram"), location: $("#s-location")
+  };
+
+  function fillSettings() {
+    const s = state.settings;
+    setF.nameAr.value = s.name?.ar ?? ""; setF.nameEn.value = s.name?.en ?? "";
+    setF.tagAr.value = s.tagline?.ar ?? ""; setF.tagEn.value = s.tagline?.en ?? "";
+    setF.phone.value = s.phone ?? ""; setF.whatsapp.value = s.whatsapp ?? "";
+    setF.instagram.value = s.instagram ?? ""; setF.location.value = s.location ?? "";
+    logoDz.set(s.logo ?? "");
+  }
+
+  $("#settings-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (logoDz.uploading) { toast("استنى لحد ما الصورة تخلص رفع", "err"); return; }
+    const data = {
+      name: { ar: setF.nameAr.value.trim(), en: setF.nameEn.value.trim() },
+      tagline: { ar: setF.tagAr.value.trim(), en: setF.tagEn.value.trim() },
+      logo: logoDz.changed ? cldSize(logoDz.get(), 400) : logoDz.get(),
+      phone: setF.phone.value.trim(),
+      whatsapp: setF.whatsapp.value.replace(/\D/g, ""),
+      instagram: setF.instagram.value.trim(),
+      location: setF.location.value.trim()
+    };
+    await run(async () => {
+      await setDoc(doc(db, "settings", "main"), data, { merge: true });
+      state.settings = { ...state.settings, ...data };
+      fillSettings();
+    }, "تم حفظ الإعدادات");
+  });
+</script>
+</body>
+</html>

@@ -1,8 +1,83 @@
 /* ==========================================================
    SUPER MENU — script.js (app logic)
-   يعتمد على البيانات الموجودة في data.js (categories, menuItems)
+   البيانات (categories, menuItems) بتتحمّل من Firebase Firestore
    Vanilla JS بدون أي framework
    ========================================================== */
+
+import { db } from "./firebase-config.js";
+import { collection, getDocs, doc, getDoc }
+  from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* ---------------------------------------------------------
+   0) LOAD DATA FROM FIREBASE
+   كانت categories و menuItems جاية من data.js،
+   دلوقتي بنعرّفهم فاضيين وبنملاهم من الـ database.
+   settings بتحمل اسم المطعم واللوجو وأرقام التواصل، وكانت
+   قبل كده مكتوبة جوه الكود.
+--------------------------------------------------------- */
+let categories = [];
+let menuItems = [];
+let settings = {};
+
+async function loadMenuData() {
+  // بنجيب التلاتة في نفس الوقت عشان أسرع
+  const [catSnap, itemSnap, settingsSnap] = await Promise.all([
+    getDocs(collection(db, "categories")),
+    getDocs(collection(db, "items")),
+    getDoc(doc(db, "settings", "main"))
+  ]);
+
+  categories = catSnap.docs
+    .map(d => d.data())
+    .sort((a, b) => a.order - b.order);
+
+  menuItems = itemSnap.docs
+    .map(d => d.data())
+    .filter(item => item.available !== false)   // الأصناف المخفية متظهرش
+    .sort((a, b) => a.order - b.order);
+
+  settings = settingsSnap.exists() ? settingsSnap.data() : {};
+}
+
+/* بيحط بيانات المطعم (الاسم، اللوجو، أرقام التواصل) في الصفحة.
+   لو صاحب المطعم لسه ما كتبش حاجة في تاب الإعدادات، بنسيب القيمة
+   الأصلية اللي في الكود بدل ما نمسحها بفراغ. */
+function applySettings() {
+  if (settings.name?.ar) translations.ar.restaurant_name = settings.name.ar;
+  if (settings.name?.en) translations.en.restaurant_name = settings.name.en;
+  if (settings.tagline?.ar) translations.ar.restaurant_tagline = settings.tagline.ar;
+  if (settings.tagline?.en) translations.en.restaurant_tagline = settings.tagline.en;
+
+  const logo = document.getElementById("lo-img");
+  if (logo && settings.logo) {
+    logo.style.display = "";     // الصورة اتخفت وهي فاضية (src="") قبل ما نجيب اللوجو، نرجعها تظهر
+    logo.src = settings.logo;
+  }
+
+  const callLink = document.getElementById("call-link");
+  if (callLink) {
+    if (settings.phone) callLink.href = "tel:" + settings.phone;
+    else callLink.style.display = "none";   // مفيش رقم متسجل، اخفي الزرار
+  }
+
+  const waLink = document.getElementById("whatsapp-link");
+  if (waLink) {
+    if (settings.whatsapp) waLink.href = "https://wa.me/" + settings.whatsapp;
+    else waLink.style.display = "none";
+  }
+
+  const igLink = document.getElementById("instagram-link");
+  if (igLink) {
+    if (settings.instagram) igLink.href = settings.instagram;
+    else igLink.style.display = "none";
+  }
+
+  const locLink = document.getElementById("location-link");
+  if (locLink) {
+    if (settings.location) locLink.href = settings.location;
+    else locLink.style.display = "none";
+  }
+}
 
 /* ---------------------------------------------------------
    1) TRANSLATIONS (UI strings)
@@ -525,4 +600,17 @@ function toggleTheme() {
 /* ---------------------------------------------------------
    15) GO!
 --------------------------------------------------------- */
-document.addEventListener("DOMContentLoaded", init);
+async function boot() {
+  menuContainer.innerHTML = '<p style="text-align:center;padding:48px 16px">جاري التحميل… / Loading…</p>';
+  try {
+    await loadMenuData();
+  } catch (err) {
+    console.error("Failed to load menu:", err);
+    menuContainer.innerHTML = '<p style="text-align:center;padding:48px 16px">تعذّر تحميل المنيو، حدّث الصفحة وجرّب تاني.</p>';
+    return;
+  }
+  applySettings();
+  init();
+}
+
+boot();
