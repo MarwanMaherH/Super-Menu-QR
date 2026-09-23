@@ -77,6 +77,20 @@ function applySettings() {
     if (settings.location) locLink.href = settings.location;
     else locLink.style.display = "none";
   }
+
+  // فيديو الهيدر: heroVideoEnabled === false يعني صاحب المطعم مسحه.
+  // مفيش heroVideo متسجل معناه لسه شغال بالفيديو الأصلي بتاع الموقع.
+  const video = document.getElementById("header-video");
+  if (video) {
+    if (settings.heroVideoEnabled === false) {
+      video.style.display = "none";   // بيفضل بس الخلفية الذهبية/الكحلي تحته
+    } else if (settings.heroVideo) {
+      const source = document.getElementById("header-video-src");
+      source.src = settings.heroVideo;
+      video.load();
+      video.play().catch(() => {});   // بعض المتصفحات بتمنع التشغيل التلقائي، مش مشكلة لو اتمنع
+    }
+  }
 }
 
 /* ---------------------------------------------------------

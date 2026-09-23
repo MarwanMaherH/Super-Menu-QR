@@ -124,6 +124,7 @@
     .dz-hint { display: grid; gap: 2px; color: var(--muted); }
     .dz-hint strong { color: var(--navy); }
     .dz-img { max-width: 100%; max-height: 220px; border-radius: 10px; display: block; }
+    .dz-vid { max-width: 100%; max-height: 220px; border-radius: 10px; display: block; }
     .dz-busy { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(255,255,255,.85); font-weight: 700; }
 
     /* ---------- نوافذ التعديل ---------- */
@@ -245,6 +246,13 @@
         </div>
         <div class="field"><label for="s-instagram">رابط الإنستجرام</label><input id="s-instagram" class="ltr" type="url" placeholder="https://instagram.com/..."></div>
         <div class="field"><label for="s-location">رابط الموقع على الخريطة</label><input id="s-location" class="ltr" type="url" placeholder="https://maps.google.com/..."></div>
+        <div class="field">
+          <span class="label">فيديو الهيدر</span>
+          <small>الفيديو اللي بيتشغل خلفية أعلى صفحة المنيو.</small>
+          <label class="check" style="margin-top:6px"><input type="checkbox" id="s-video-on" checked> اعرض الفيديو</label>
+          <div id="s-video" style="margin-top:10px"></div>
+          <button type="button" class="link-btn" id="s-video-reset" style="color:var(--navy)">استخدام الفيديو الأصلي بتاع الموقع</button>
+        </div>
         <button class="btn" type="submit">حفظ الإعدادات</button>
       </form>
     </section>
@@ -361,7 +369,8 @@
     if (c.includes("unavailable") || c.includes("network") || c.includes("Failed to fetch")) return "مفيش اتصال بالإنترنت. جرّب تاني.";
     if (c === "cloudinary-not-configured") return "رفع الصور لسه مش متظبط. راجع ملف cloudinary-config.js";
     if (c === "not-image") return "الملف ده مش صورة.";
-    if (c === "too-big") return "الصورة كبيرة قوي (الحد الأقصى 10 ميجا).";
+    if (c === "not-video") return "الملف ده مش فيديو.";
+    if (c === "too-big") return "الملف كبير قوي. قلل حجمه وجرّب تاني.";
     return "حصلت مشكلة: " + c;
   }
 
@@ -421,6 +430,22 @@
     return url.replace("/upload/", `/upload/f_auto,q_auto,w_${width}/`);
   }
 
+  // زي uploadImage بالظبط، بس لملفات الفيديو ومساحة أكبر
+  async function uploadVideo(file) {
+    if (!CLOUDINARY.cloudName || CLOUDINARY.cloudName.startsWith("PASTE")) throw new Error("cloudinary-not-configured");
+    if (!file || !file.type.startsWith("video/")) throw new Error("not-video");
+    if (file.size > 40 * 1024 * 1024) throw new Error("too-big");
+
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("upload_preset", CLOUDINARY.uploadPreset);
+
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY.cloudName}/video/upload`, { method: "POST", body: fd });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data?.error?.message || "upload-failed");
+    return data.secure_url;
+  }
+
   /* مربع "اسحب الصورة هنا" — بيتستخدم في الصنف والقسم واللوجو */
   function createDropzone(host) {
     host.innerHTML = `
@@ -466,6 +491,50 @@
   const itemDz = createDropzone($("#i-image"));
   const catDz  = createDropzone($("#c-image"));
   const logoDz = createDropzone($("#s-logo"));
+
+  /* مربع رفع فيديو الهيدر — نفس فكرة createDropzone بس بمعاينة فيديو */
+  function createVideoDropzone(host) {
+    host.innerHTML = `
+      <div class="dz" tabindex="0" role="button" aria-label="اختيار فيديو">
+        <video class="dz-vid" muted loop playsinline hidden></video>
+        <div class="dz-hint"><strong>اسحب فيديو هنا</strong><span>أو اضغط لاختياره من جهازك (أقل من 40 ميجا)</span></div>
+        <div class="dz-busy" hidden>جاري رفع الفيديو، ممكن ياخد وقت حسب سرعة النت…</div>
+        <input type="file" accept="video/*" hidden>
+      </div>
+      <button type="button" class="link-btn dz-clear" hidden>حذف الفيديو المرفوع</button>`;
+    const dz = $(".dz", host), vid = $(".dz-vid", host), hint = $(".dz-hint", host),
+          busy = $(".dz-busy", host), input = $("input", host), clear = $(".dz-clear", host);
+    let value = "", changed = false, uploading = false;
+
+    const paint = () => {
+      vid.hidden = !value; hint.hidden = !!value; clear.hidden = !value;
+      if (value) { vid.src = value; vid.play().catch(() => {}); } else vid.removeAttribute("src");
+    };
+    async function handleFile(file) {
+      if (!file) return;
+      uploading = true; busy.hidden = false;
+      try { value = await uploadVideo(file); changed = true; paint(); }
+      catch (e) { console.error(e); toast(friendlyError(e), "err"); }
+      finally { uploading = false; busy.hidden = true; }
+    }
+    input.addEventListener("click", e => e.stopPropagation());
+    dz.addEventListener("click", () => input.click());
+    dz.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); input.click(); } });
+    input.addEventListener("change", () => { handleFile(input.files[0]); input.value = ""; });
+    dz.addEventListener("dragover", e => { e.preventDefault(); dz.classList.add("over"); });
+    dz.addEventListener("dragleave", () => dz.classList.remove("over"));
+    dz.addEventListener("drop", e => { e.preventDefault(); dz.classList.remove("over"); handleFile(e.dataTransfer.files[0]); });
+    clear.addEventListener("click", () => { value = ""; changed = true; paint(); });
+
+    return {
+      get: () => value,
+      set: (u) => { value = u || ""; changed = false; paint(); },
+      get changed() { return changed; },
+      get uploading() { return uploading; }
+    };
+  }
+
+  const videoDz = createVideoDropzone($("#s-video"));
 
   /* =========================================================
      تسجيل الدخول
@@ -890,8 +959,16 @@
   ========================================================= */
   const setF = {
     nameAr: $("#s-name-ar"), nameEn: $("#s-name-en"), tagAr: $("#s-tag-ar"), tagEn: $("#s-tag-en"),
-    phone: $("#s-phone"), whatsapp: $("#s-whatsapp"), instagram: $("#s-instagram"), location: $("#s-location")
+    phone: $("#s-phone"), whatsapp: $("#s-whatsapp"), instagram: $("#s-instagram"), location: $("#s-location"),
+    videoOn: $("#s-video-on")
   };
+
+  function updateVideoSectionState() {
+    $("#s-video").style.opacity = setF.videoOn.checked ? "1" : ".5";
+    $("#s-video-reset").hidden = !setF.videoOn.checked;
+  }
+  setF.videoOn.addEventListener("change", updateVideoSectionState);
+  $("#s-video-reset").addEventListener("click", () => videoDz.set(""));
 
   function fillSettings() {
     const s = state.settings;
@@ -900,11 +977,15 @@
     setF.phone.value = s.phone ?? ""; setF.whatsapp.value = s.whatsapp ?? "";
     setF.instagram.value = s.instagram ?? ""; setF.location.value = s.location ?? "";
     logoDz.set(s.logo ?? "");
+    setF.videoOn.checked = s.heroVideoEnabled !== false;
+    videoDz.set(s.heroVideo ?? "");
+    updateVideoSectionState();
   }
 
   $("#settings-form").addEventListener("submit", async (e) => {
     e.preventDefault();
     if (logoDz.uploading) { toast("استنى لحد ما الصورة تخلص رفع", "err"); return; }
+    if (videoDz.uploading) { toast("استنى لحد ما الفيديو يخلص رفع", "err"); return; }
     const data = {
       name: { ar: setF.nameAr.value.trim(), en: setF.nameEn.value.trim() },
       tagline: { ar: setF.tagAr.value.trim(), en: setF.tagEn.value.trim() },
@@ -912,7 +993,9 @@
       phone: setF.phone.value.trim(),
       whatsapp: setF.whatsapp.value.replace(/\D/g, ""),
       instagram: setF.instagram.value.trim(),
-      location: setF.location.value.trim()
+      location: setF.location.value.trim(),
+      heroVideoEnabled: setF.videoOn.checked,
+      heroVideo: videoDz.get()
     };
     await run(async () => {
       await setDoc(doc(db, "settings", "main"), data, { merge: true });
