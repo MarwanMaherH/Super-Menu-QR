@@ -5,8 +5,19 @@
    ========================================================== */
 
 import { db } from "./firebase-config.js";
+import { CLOUDINARY } from "./cloudinary-config.js";
 import { collection, getDocs, doc, getDoc }
   from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+/* بيمرّر أي رابط صورة (حتى لو من موقع تاني زي Pinterest) عبر Cloudinary
+   عشان يتصغّر ويتحول لصيغة أخف، من غير ما نحتاج نرفع الصور دي يدوياً.
+   لو Cloudinary لسه مش متظبط، أو الصورة أصلاً مرفوعة عليه، بنسيبها زي ما هي. */
+function cldFetch(url, width) {
+  if (!url) return url;
+  if (url.includes("res.cloudinary.com")) return url;         // مرفوعة من الأدمن، أصلاً محسّنة
+  if (!CLOUDINARY.cloudName || CLOUDINARY.cloudName.startsWith("PASTE")) return url;
+  return `https://res.cloudinary.com/${CLOUDINARY.cloudName}/image/fetch/f_auto,q_auto,w_${width}/${encodeURIComponent(url)}`;
+}
 
 /* ---------------------------------------------------------
    0) LOAD DATA FROM FIREBASE
@@ -19,7 +30,31 @@ let categories = [];
 let menuItems = [];
 let settings = {};
 
+const CACHE_KEY = "superMenuCache";
+const CACHE_MINUTES = 5;   // مدة صلاحية الكاش. تعديل صاحب المطعم بياخد لحد المدة دي عشان يظهر لكل الزوار
+
+function readCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    const cached = JSON.parse(raw);
+    if (Date.now() - cached.ts > CACHE_MINUTES * 60 * 1000) return null;   // الكاش قديم
+    return cached;
+  } catch { return null; }   // المتصفح مانع localStorage (تصفح خفي مثلاً)، مش مشكلة
+}
+
+function writeCache() {
+  try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), categories, menuItems, settings })); }
+  catch { /* مساحة التخزين ممتلئة أو ممنوعة، بنتجاهل ونكمل عادي */ }
+}
+
 async function loadMenuData() {
+  const cached = readCache();
+  if (cached) {   // فتح تاني في آخر 5 دقايق: نستخدم الكاش ونوفر رحلة كاملة لـ Firebase
+    categories = cached.categories; menuItems = cached.menuItems; settings = cached.settings;
+    return;
+  }
+
   // بنجيب التلاتة في نفس الوقت عشان أسرع
   const [catSnap, itemSnap, settingsSnap] = await Promise.all([
     getDocs(collection(db, "categories")),
@@ -37,6 +72,7 @@ async function loadMenuData() {
     .sort((a, b) => a.order - b.order);
 
   settings = settingsSnap.exists() ? settingsSnap.data() : {};
+  writeCache();
 }
 
 /* بيحط بيانات المطعم (الاسم، اللوجو، أرقام التواصل) في الصفحة.
@@ -285,7 +321,7 @@ function renderCategories() {
     const btn = document.createElement("button");
     btn.className = "cat-btn" + (cat.id === state.activeCategory ? " active" : "");
     btn.dataset.category = cat.id;
-    btn.innerHTML = `<img class="cat-avatar" src="${cat.thumb}" alt="" loading="lazy"><span>${state.lang === "ar" ? cat.ar : cat.en}</span>`;
+    btn.innerHTML = `<img class="cat-avatar" src="${cldFetch(cat.thumb, 100)}" alt="" loading="lazy"><span>${state.lang === "ar" ? cat.ar : cat.en}</span>`;
     btn.addEventListener("click", () => goToCategory(cat.id));
     categoriesNav.appendChild(btn);
   });
@@ -333,7 +369,7 @@ function buildCard(item, index) {
 
   card.innerHTML = `
     <div class="card-img-wrap">
-      <img src="${item.image}" alt="${item.name[state.lang]}" loading="lazy">
+      <img src="${cldFetch(item.image, 500)}" alt="${item.name[state.lang]}" loading="lazy">
       ${item.tag ? `<span class="menu-tag ${tagClass}">${item.tag}</span>` : ""}
       <button class="card-fav ${isFav ? "is-fav" : ""}" data-id="${item.id}" aria-label="favorite">
         <svg class="icon" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
@@ -397,7 +433,7 @@ function renderHomeTheater() {
     card.style.setProperty("--cat-color", cat.color);
     card.innerHTML = `
       <div class="cat-theater-img-wrap">
-        <img class="cat-theater-img" src="${cat.banner}" alt="${state.lang === "ar" ? cat.ar : cat.en}" loading="lazy">
+        <img class="cat-theater-img" src="${cldFetch(cat.banner, 700)}" alt="${state.lang === "ar" ? cat.ar : cat.en}" loading="lazy">
       </div>
       <div class="cat-theater-scrim"></div>
       <div class="cat-theater-scrim2"></div>
@@ -441,7 +477,7 @@ function renderCategoryPage(catId) {
     </button>
     <div class="cat-hero">
       <div class="cat-hero-img-wrap">
-        <img class="cat-hero-img" src="${cat.banner}" alt="${state.lang === "ar" ? cat.ar : cat.en}">
+        <img class="cat-hero-img" src="${cldFetch(cat.banner, 1000)}" alt="${state.lang === "ar" ? cat.ar : cat.en}" loading="lazy">
       </div>
       <div class="cat-hero-scrim"></div>
       <div class="cat-hero-content">
@@ -544,7 +580,7 @@ function openModal(id) {
 
   const imgEl = $("#modal-img");
   imgEl.classList.remove("loaded");
-  imgEl.src = item.image;
+  imgEl.src = cldFetch(item.image, 900);
   bindImageLoad(imgEl, null);
 
   $("#modal-name").textContent = item.name[state.lang];
@@ -615,7 +651,10 @@ function toggleTheme() {
    15) GO!
 --------------------------------------------------------- */
 async function boot() {
-  menuContainer.innerHTML = '<p style="text-align:center;padding:48px 16px">جاري التحميل… / Loading…</p>';
+  // لو الكاش موجود، منعرضش رسالة تحميل خالص، الموقع يطلع فوراً
+  if (!readCache()) {
+    menuContainer.innerHTML = '<p style="text-align:center;padding:48px 16px">جاري التحميل… / Loading…</p>';
+  }
   try {
     await loadMenuData();
   } catch (err) {

@@ -375,8 +375,12 @@
   }
 
   // بيشغّل عملية حفظ ويعرض رسالة نجاح أو خطأ بشكل ودود
+  // بعد أي حفظ ناجح، بنمسح كاش المنيو بتاع الجهاز ده عشان التعديل يظهر فوراً
+  // لو صاحب المطعم فتح index.html من نفس المتصفح، بدل ما يستنى مدة الكاش
+  function bustMenuCache() { try { localStorage.removeItem("superMenuCache"); } catch { /* ignore */ } }
+
   async function run(fn, okMsg) {
-    try { await fn(); if (okMsg) toast(okMsg); return true; }
+    try { await fn(); bustMenuCache(); if (okMsg) toast(okMsg); return true; }
     catch (e) { console.error(e); toast(friendlyError(e), "err"); return false; }
   }
 
