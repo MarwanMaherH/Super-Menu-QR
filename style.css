@@ -890,10 +890,95 @@ html[dir="rtl"] .back-btn .icon{ transform: scaleX(-1); }
 }
 .toast.show{ opacity:1; transform: translateX(-50%) translateY(0); }
 
-/* ==================== FOOTER ==================== */
-.site-footer{ text-align:center; padding: 34px 20px 10px; color: var(--text-muted); font-size: 12px; position: relative; z-index:1; }
-.site-footer .footer-divider{ width: 46px; height: 3px; background: var(--gold); margin: 0 auto 14px; border-radius: 3px; }
+/* ==================== PREMIUM FOOTER ==================== */
 
+.site-footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 42px 20px 18px;
+    margin-top: 30px;
+    color: var(--text-muted);
+}
+
+/* Elegant divider */
+.site-footer .footer-divider {
+    width: 52px;
+    height: 2px;
+    margin: 0 auto 20px;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        var(--gold),
+        transparent
+    );
+    border-radius: 999px;
+    opacity: 0.9;
+}
+
+/* Main CTA */
+.site-footer .footer-cta {
+    margin: 0 auto 12px;
+    max-width: 420px;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.8;
+    color: var(--text);
+    letter-spacing: 0.1px;
+}
+
+/* Developer credit */
+.site-footer .footer-credit {
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.site-footer .footer-credit a {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.site-footer .footer-credit a span {
+    color: var(--gold);
+    font-weight: 600;
+}
+
+.site-footer .footer-credit a:hover {
+    color: var(--text);
+    transform: translateY(-1px);
+}
+
+.site-footer .footer-credit a:hover span {
+    color: var(--gold);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+    .site-footer {
+        padding: 34px 18px 16px;
+        margin-top: 20px;
+    }
+
+    .site-footer .footer-divider {
+        width: 44px;
+        margin-bottom: 16px;
+    }
+
+    .site-footer .footer-cta {
+        font-size: 12px;
+    }
+
+    .site-footer .footer-credit {
+        font-size: 10px;
+    }
+}
 /* ==================== ANIMATIONS ==================== */
 @keyframes fadeSlideUp{ from{ opacity:0; transform: translateY(16px); } to{ opacity:1; transform: translateY(0); } }
 

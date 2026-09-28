@@ -171,7 +171,7 @@ const translations = {
     removed_fav: "Removed from favorites",
     order_hint: "Ask your server to order",
     view_categories: "Browse all categories",
-        maroo: "Developed by Marwan Maher"
+    maroo: "Developed by Marwan Maher"
 
   }
 };
