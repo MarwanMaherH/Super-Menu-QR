@@ -151,7 +151,18 @@ const translations = {
     removed_fav: "تمت الإزالة من المفضلة",
     order_hint: "اطلب من فريق الخدمة",
     view_categories: "تصفح كل الأقسام",
-    maroo: "من تطوير مروان ماهر"
+    maroo: "من تطوير مروان ماهر",
+    add_to_cart: "أضف للطلب",
+    added_to_cart: "تمت الإضافة للطلب",
+    cart_title: "طلبك",
+    cart_empty: "السلة فاضية لسه، اختار أصناف من المنيو",
+    cart_table_label: "رقم الترابيزة (اختياري)",
+    cart_table_placeholder: "مثلاً 5",
+    cart_subtotal: "الإجمالي",
+    cart_send: "إرسال الطلب على واتساب",
+    cart_clear: "إفراغ السلة",
+    cart_no_whatsapp: "التواصل مع المطعم غير متاح دلوقتي، جرب تاني بعدين",
+    cart_item_count_suffix: "صنف في السلة"
   },
   en: {
     restaurant_name: "Super Menu",
@@ -171,7 +182,18 @@ const translations = {
     removed_fav: "Removed from favorites",
     order_hint: "Ask your server to order",
     view_categories: "Browse all categories",
-    maroo: "Developed by Marwan Maher"
+        maroo: "Developed by Marwan Maher",
+    add_to_cart: "Add to order",
+    added_to_cart: "Added to your order",
+    cart_title: "Your order",
+    cart_empty: "Your cart is empty. Pick something from the menu",
+    cart_table_label: "Table number (optional)",
+    cart_table_placeholder: "e.g. 5",
+    cart_subtotal: "Total",
+    cart_send: "Send order on WhatsApp",
+    cart_clear: "Clear cart",
+    cart_no_whatsapp: "Contacting the restaurant isn't available right now, try again later",
+    cart_item_count_suffix: "items in cart"
 
   }
 };
@@ -186,8 +208,14 @@ let state = {
   activeCategory: "all",
   searchQuery: "",
   favorites: JSON.parse(localStorage.getItem("sm_favorites") || "[]"),
-  showFavoritesOnly: false
+  showFavoritesOnly: false,
+  cart: JSON.parse(localStorage.getItem("sm_cart") || "{}"),   // { itemId: qty }
+  tableNumber: new URLSearchParams(location.search).get("table") || ""
 };
+
+function saveCart() {
+  localStorage.setItem("sm_cart", JSON.stringify(state.cart));
+}
 
 /* ---------------------------------------------------------
    3) HELPERS
@@ -240,6 +268,7 @@ function init() {
   renderCategories();
   applyTranslations();
   renderMenu();
+  initCart();
 
   searchInput.addEventListener("input", onSearchInput);
   clearSearchBtn.addEventListener("click", clearSearch);
@@ -249,6 +278,7 @@ function init() {
   $("#modal-close").addEventListener("click", closeModal);
   modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
   $("#modal-fav").addEventListener("click", () => toggleFavorite(currentModalId, true));
+  $("#modal-order-hint").addEventListener("click", () => addToCart(currentModalId, true));
   document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
   scrollTopBtn.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
 
@@ -378,7 +408,12 @@ function buildCard(item, index) {
     <div class="card-content">
       <h3>${item.name[state.lang]}</h3>
       <p>${item.description[state.lang]}</p>
-      <span class="card-price">${item.price} <small>${t.currency}</small></span>
+      <div class="card-footer">
+        <span class="card-price">${item.price} <small>${t.currency}</small></span>
+        <button type="button" class="card-cart-btn" data-id="${item.id}" aria-label="${t.add_to_cart}">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+        </button>
+      </div>
     </div>
   `;
 
@@ -396,6 +431,11 @@ function buildCard(item, index) {
     toggleFavorite(item.id, false, e.currentTarget);
   });
 
+  card.querySelector(".card-cart-btn").addEventListener("click", (e) => {
+    e.stopPropagation();
+    addToCart(item.id, true);
+  });
+
   return card;
 }
 
@@ -408,13 +448,12 @@ function renderMenu() {
 
   if (state.view === "home" && (query || state.showFavoritesOnly)) {
     renderFlatResults();
-    return;
-  }
-  if (state.view === "category") {
+  } else if (state.view === "category") {
     renderCategoryPage(state.activeCategory);
-    return;
+  } else {
+    renderHomeTheater();
   }
-  renderHomeTheater();
+  updateCardQtyBadges();   // يعيد رسم عدد كل صنف في السلة فوق زراره بعد إعادة بناء الكروت
 }
 
 /* ---- HOME: theater grid of category cards (real photo hero per category) ---- */
@@ -565,6 +604,159 @@ function toggleFavFilter() {
   renderMenu();
 }
 
+/* ---------------------------------------------------------
+   11.5) CART + WHATSAPP CHECKOUT
+--------------------------------------------------------- */
+const cartBar = $("#cart-bar");
+const cartOverlay = $("#cart-overlay");
+const cartList = $("#cart-list");
+const cartTableInput = $("#cart-table-input");
+
+function cartCount() {
+  return Object.values(state.cart).reduce((sum, qty) => sum + qty, 0);
+}
+
+function cartTotal() {
+  return Object.entries(state.cart).reduce((sum, [id, qty]) => {
+    const item = menuItems.find(i => i.id === Number(id));
+    return item ? sum + item.price * qty : sum;
+  }, 0);
+}
+
+function setQty(id, qty) {
+  if (qty <= 0) delete state.cart[id];
+  else state.cart[id] = qty;
+  saveCart();
+  renderCartBar();
+  renderCartList();
+  updateCardQtyBadges();
+}
+
+function addToCart(id, showFeedback) {
+  const current = state.cart[id] || 0;
+  setQty(id, current + 1);
+  if (showFeedback) showToast(translations[state.lang].added_to_cart);
+}
+
+function renderCartBar() {
+  const t = translations[state.lang];
+  const count = cartCount();
+  cartBar.classList.toggle("show", count > 0);
+  if (count === 0) return;
+  cartBar.innerHTML = `
+    <span class="cart-bar-count">${count} ${t.cart_item_count_suffix}</span>
+    <span class="cart-bar-total">${cartTotal()} ${t.currency}</span>`;
+}
+
+// بيحط عداد صغير فوق زرار "أضف للطلب" في كل كارت، عشان الزبون يشوف قد إيه أخد من كل صنف بدون ما يفتح السلة
+function updateCardQtyBadges() {
+  document.querySelectorAll(".card-cart-btn").forEach(btn => {
+    const qty = state.cart[btn.dataset.id] || 0;
+    btn.classList.toggle("has-qty", qty > 0);
+    btn.querySelector(".qty-badge")?.remove();
+    if (qty > 0) {
+      const badge = document.createElement("span");
+      badge.className = "qty-badge";
+      badge.textContent = qty;
+      btn.appendChild(badge);
+    }
+  });
+}
+
+function renderCartList() {
+  const t = translations[state.lang];
+  const entries = Object.entries(state.cart);
+
+  if (!entries.length) {
+    cartList.innerHTML = `<p class="cart-empty">${t.cart_empty}</p>`;
+    $("#cart-send").disabled = true;
+    return;
+  }
+  $("#cart-send").disabled = false;
+
+  cartList.innerHTML = entries.map(([id, qty]) => {
+    const item = menuItems.find(i => i.id === Number(id));
+    if (!item) return "";
+    return `
+      <div class="cart-row" data-id="${id}">
+        <img src="${cldFetch(item.image, 120)}" alt="" loading="lazy">
+        <div class="cart-row-main">
+          <span class="cart-row-name">${item.name[state.lang]}</span>
+          <span class="cart-row-price">${item.price} ${t.currency}</span>
+        </div>
+        <div class="qty-stepper">
+          <button type="button" class="qty-btn qty-minus" aria-label="-">−</button>
+          <span class="qty-value">${qty}</span>
+          <button type="button" class="qty-btn qty-plus" aria-label="+">+</button>
+        </div>
+      </div>`;
+  }).join("");
+
+  $("#cart-subtotal").textContent = `${cartTotal()} ${t.currency}`;
+}
+
+function openCart() {
+  cartTableInput.value = state.tableNumber;
+  renderCartList();
+  cartOverlay.classList.remove("hidden");
+  document.body.style.overflow = "hidden";
+}
+
+function closeCart() {
+  cartOverlay.classList.add("hidden");
+  document.body.style.overflow = "";
+}
+
+function buildWhatsAppMessage() {
+  const t = translations[state.lang];
+  const lines = Object.entries(state.cart).map(([id, qty]) => {
+    const item = menuItems.find(i => i.id === Number(id));
+    if (!item) return null;
+    return `${qty} × ${item.name[state.lang]} — ${item.price * qty} ${t.currency}`;
+  }).filter(Boolean);
+
+  const header = state.lang === "ar" ? "طلب جديد من سوبر منيو" : "New order from Super Menu";
+  const tableLine = state.tableNumber
+    ? (state.lang === "ar" ? `رقم الترابيزة: ${state.tableNumber}` : `Table number: ${state.tableNumber}`)
+    : "";
+  const totalLine = `${t.cart_subtotal}: ${cartTotal()} ${t.currency}`;
+
+  return [header, tableLine, "", ...lines, "", totalLine].filter(l => l !== "").join("\n");
+}
+
+function sendCartToWhatsApp() {
+  if (!settings.whatsapp) { showToast(translations[state.lang].cart_no_whatsapp); return; }
+  const url = `https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(buildWhatsAppMessage())}`;
+  window.open(url, "_blank", "noopener");
+}
+
+function initCart() {
+  renderCartBar();
+  updateCardQtyBadges();
+
+  cartBar.addEventListener("click", openCart);
+  $("#cart-close").addEventListener("click", closeCart);
+  cartOverlay.addEventListener("click", (e) => { if (e.target === cartOverlay) closeCart(); });
+
+  cartTableInput.addEventListener("input", () => { state.tableNumber = cartTableInput.value.trim(); });
+
+  cartList.addEventListener("click", (e) => {
+    const row = e.target.closest(".cart-row");
+    if (!row) return;
+    const id = row.dataset.id;
+    const qty = state.cart[id] || 0;
+    if (e.target.closest(".qty-plus")) setQty(id, qty + 1);
+    if (e.target.closest(".qty-minus")) setQty(id, qty - 1);
+  });
+
+  $("#cart-send").addEventListener("click", sendCartToWhatsApp);
+  $("#cart-clear").addEventListener("click", () => {
+    state.cart = {};
+    saveCart();
+    renderCartBar(); renderCartList(); updateCardQtyBadges();
+  });
+}
+
 
 
 /* ---------------------------------------------------------
@@ -586,7 +778,7 @@ function openModal(id) {
   $("#modal-name").textContent = item.name[state.lang];
   $("#modal-desc").textContent = item.description[state.lang];
   $("#modal-price").textContent = `${item.price} ${t.currency}`;
-  $("#modal-order-hint").textContent = t.order_hint;
+  $("#modal-order-hint").textContent = t.add_to_cart;
 
   const tagEl = $("#modal-tag");
   if (item.tag) {
@@ -624,6 +816,8 @@ function toggleLanguage() {
   applyTranslations();
   renderCategories();
   renderMenu();
+  renderCartBar();
+  renderCartList();
 }
 
 function applyTranslations() {
