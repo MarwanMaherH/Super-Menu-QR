@@ -1,7 +1,7 @@
 /* ==========================================================
    SUPER MENU — script.js (app logic)
-   البيانات (categories, menuItems) بتتحمّل من Firebase Firestore
-   Vanilla JS بدون أي framework
+   البيانات بتتحمّل فوراً من البيانات المدمجة (Default Data)
+   مع مزامنة Firebase في الخلفية لو متاح
    ========================================================== */
 
 import { db } from "./firebase-config.js";
@@ -9,91 +9,189 @@ import { CLOUDINARY } from "./cloudinary-config.js";
 import { collection, getDocs, doc, getDoc }
   from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 
-/* بيمرّر أي رابط صورة (حتى لو من موقع تاني زي Pinterest) عبر Cloudinary
-   عشان يتصغّر ويتحول لصيغة أخف، من غير ما نحتاج نرفع الصور دي يدوياً.
-   لو Cloudinary لسه مش متظبط، أو الصورة أصلاً مرفوعة عليه، بنسيبها زي ما هي. */
 function cldFetch(url, width) {
   if (!url) return url;
-  if (url.includes("res.cloudinary.com")) return url;         // مرفوعة من الأدمن، أصلاً محسّنة
+  if (url.includes("res.cloudinary.com")) return url;
   if (!CLOUDINARY.cloudName || CLOUDINARY.cloudName.startsWith("PASTE")) return url;
   return `https://res.cloudinary.com/${CLOUDINARY.cloudName}/image/fetch/f_auto,q_auto,w_${width}/${encodeURIComponent(url)}`;
 }
 
 /* ---------------------------------------------------------
-   0) LOAD DATA FROM FIREBASE
-   كانت categories و menuItems جاية من data.js،
-   دلوقتي بنعرّفهم فاضيين وبنملاهم من الـ database.
-   settings بتحمل اسم المطعم واللوجو وأرقام التواصل، وكانت
-   قبل كده مكتوبة جوه الكود.
+   DEFAULT DATA — بتظهر فوراً بدون أي انتظار
 --------------------------------------------------------- */
-let categories = [];
-let menuItems = [];
-let settings = {};
+const DEFAULT_CATEGORIES = [
+  {
+    id: "breakfast", ar: "فطار", en: "Breakfast", color: "#C9A24B",
+    banner: "https://images.unsplash.com/photo-1533089862017-5614ecb352ae?w=800&q=80",
+    thumb: "https://images.unsplash.com/photo-1533089862017-5614ecb352ae?w=200&q=80",
+    order: 0, number: 1, icon: ""
+  },
+  {
+    id: "main-dishes", ar: "أطباق رئيسية", en: "Main Dishes", color: "#C6512C",
+    banner: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80",
+    thumb: "https://images.unsplash.com/photo-1544025162-d76694265947?w=200&q=80",
+    order: 1, number: 2, icon: ""
+  },
+  {
+    id: "desserts", ar: "حلويات", en: "Desserts", color: "#6E2A3A",
+    banner: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80",
+    thumb: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=200&q=80",
+    order: 2, number: 3, icon: ""
+  }
+];
+
+const DEFAULT_ITEMS = [
+  {
+    id: 1, category: "breakfast",
+    name: { ar: "فول مدمس بالطحينة", en: "Hummus Tahini" },
+    description: { ar: "فول مدمس ناعم مع طحينة وزيت زيتون بكر ممتاز وكمون", en: "Smooth fava beans with tahini, premium olive oil and cumin" },
+    price: 35, tag: "",
+    image: "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=600&q=80",
+    available: true, order: 0
+  },
+  {
+    id: 2, category: "breakfast",
+    name: { ar: "بيض مقلي بالسمن", en: "Sunny Side Eggs" },
+    description: { ar: "بيضتان مقليتان على السمن البلدي مع بهارات مشكلة", en: "Two farm eggs fried in clarified butter with mixed spices" },
+    price: 28, tag: "NEW",
+    image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&q=80",
+    available: true, order: 1
+  },
+  {
+    id: 3, category: "breakfast",
+    name: { ar: "فتة شاورما", en: "Shawarma Fatta" },
+    description: { ar: "فتة بالشاورما والأرز والخل والثومية والخبز المحمص", en: "Fatta with shawarma, rice, vinegar, garlic sauce and toasted bread" },
+    price: 75, tag: "SIGNATURE",
+    image: "https://images.unsplash.com/photo-1561651823-34a0658ebc9d?w=600&q=80",
+    available: true, order: 2
+  },
+  {
+    id: 4, category: "main-dishes",
+    name: { ar: "ريش ضاني مشوية", en: "Grilled Lamb Chops" },
+    description: { ar: "ريش ضاني مشوية على الفحم مع الأرز البسمتي والسلطة", en: "Charcoal-grilled lamb chops with basmati rice and salad" },
+    price: 185, tag: "SIGNATURE",
+    image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=600&q=80",
+    available: true, order: 3
+  },
+  {
+    id: 5, category: "main-dishes",
+    name: { ar: "دجاج مشوي بالأعشاب", en: "Herb Grilled Chicken" },
+    description: { ar: "نصف دجاجة مشوية متبلة بالزعتر والروزماري والليمون", en: "Half chicken grilled with thyme, rosemary and lemon marinade" },
+    price: 95, tag: "",
+    image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&q=80",
+    available: true, order: 4
+  },
+  {
+    id: 6, category: "main-dishes",
+    name: { ar: "كفتة مشوية", en: "Grilled Kofta" },
+    description: { ar: "كفتة لحم بقري مشوية مع الطماطم والفلفل وصوص الطحينة", en: "Grilled beef kofta with tomatoes, peppers and tahini sauce" },
+    price: 110, tag: "CHEF'S PICK",
+    image: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=80",
+    available: true, order: 5
+  },
+  {
+    id: 7, category: "desserts",
+    name: { ar: "كريم كراميل", en: "Crème Caramel" },
+    description: { ar: "حلى الكريم كراميل البارد بالفانيليا البوربون", en: "Cold vanilla crème caramel with bourbon vanilla" },
+    price: 40, tag: "",
+    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80",
+    available: true, order: 6
+  },
+  {
+    id: 8, category: "desserts",
+    name: { ar: "كيك الشوكولاتة الداكنة", en: "Dark Chocolate Cake" },
+    description: { ar: "كيك شوكولاتة غني 70% مع صوص الشوكولاتة الساخن والفانيليا", en: "Rich 70% dark chocolate cake with hot chocolate sauce and vanilla" },
+    price: 55, tag: "CHEF'S PICK",
+    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&q=80",
+    available: true, order: 7
+  },
+  {
+    id: 9, category: "desserts",
+    name: { ar: "كنافة نابلسية", en: "Knafeh Nabulsi" },
+    description: { ar: "كنافة بالجبن النابلسي والقطر والفستق الحلبي", en: "Knafeh with Nabulsi cheese, syrup and Aleppo pistachios" },
+    price: 48, tag: "NEW",
+    image: "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600&q=80",
+    available: true, order: 8
+  }
+];
+
+const DEFAULT_SETTINGS = {
+  name: { ar: "سوبر منيو", en: "Super Menu" },
+  tagline: { ar: "أكل شهي، تجربة مختلفة", en: "Great food, a different experience" },
+  logo: "",
+  phone: "01000000000",
+  whatsapp: "201000000000",
+  instagram: "https://instagram.com/",
+  location: "https://maps.google.com/",
+  heroVideoEnabled: true,
+  heroVideo: ""
+};
+
+/* ---------------------------------------------------------
+   DATA STATE
+--------------------------------------------------------- */
+let categories = [...DEFAULT_CATEGORIES];
+let menuItems = [...DEFAULT_ITEMS];
+let settings = { ...DEFAULT_SETTINGS };
 
 const CACHE_KEY = "superMenuCache";
-const CACHE_MINUTES = 5;   // مدة صلاحية الكاش. تعديل صاحب المطعم بياخد لحد المدة دي عشان يظهر لكل الزوار
+const CACHE_MINUTES = 5;
 
 function readCache() {
   try {
     const raw = localStorage.getItem(CACHE_KEY);
     if (!raw) return null;
     const cached = JSON.parse(raw);
-    if (Date.now() - cached.ts > CACHE_MINUTES * 60 * 1000) return null;   // الكاش قديم
+    if (Date.now() - cached.ts > CACHE_MINUTES * 60 * 1000) return null;
     return cached;
-  } catch { return null; }   // المتصفح مانع localStorage (تصفح خفي مثلاً)، مش مشكلة
+  } catch { return null; }
 }
 
 function writeCache() {
   try { localStorage.setItem(CACHE_KEY, JSON.stringify({ ts: Date.now(), categories, menuItems, settings })); }
-  catch { /* مساحة التخزين ممتلئة أو ممنوعة، بنتجاهل ونكمل عادي */ }
+  catch { /* ignore */ }
 }
 
 async function loadMenuData() {
   const cached = readCache();
-  if (cached) {   // فتح تاني في آخر 5 دقايق: نستخدم الكاش ونوفر رحلة كاملة لـ Firebase
-    categories = cached.categories; menuItems = cached.menuItems; settings = cached.settings;
+  if (cached) {
+    categories = cached.categories;
+    menuItems = cached.menuItems;
+    settings = cached.settings;
     return;
   }
 
-  // بنجيب التلاتة في نفس الوقت عشان أسرع
-  const [catSnap, itemSnap, settingsSnap] = await Promise.all([
-    getDocs(collection(db, "categories")),
-    getDocs(collection(db, "items")),
-    getDoc(doc(db, "settings", "main"))
-  ]);
+  try {
+    const [catSnap, itemSnap, settingsSnap] = await Promise.all([
+      getDocs(collection(db, "categories")),
+      getDocs(collection(db, "items")),
+      getDoc(doc(db, "settings", "main"))
+    ]);
 
-  categories = catSnap.docs
-    .map(d => d.data())
-    .sort((a, b) => a.order - b.order);
+    const cats = catSnap.docs.map(d => d.data()).sort((a, b) => a.order - b.order);
+    const items = itemSnap.docs.map(d => d.data()).filter(item => item.available !== false).sort((a, b) => a.order - b.order);
+    const sets = settingsSnap.exists() ? settingsSnap.data() : {};
 
-  menuItems = itemSnap.docs
-    .map(d => d.data())
-    .filter(item => item.available !== false)   // الأصناف المخفية متظهرش
-    .sort((a, b) => a.order - b.order);
+    if (cats.length) categories = cats;
+    if (items.length) menuItems = items;
+    if (Object.keys(sets).length) settings = sets;
 
-  settings = settingsSnap.exists() ? settingsSnap.data() : {};
-  writeCache();
+    writeCache();
+  } catch (err) {
+    console.error("Firebase sync failed (using defaults):", err);
+  }
 }
 
-/* بيحط بيانات المطعم (الاسم، اللوجو، أرقام التواصل) في الصفحة.
-   لو صاحب المطعم لسه ما كتبش حاجة في تاب الإعدادات، بنسيب القيمة
-   الأصلية اللي في الكود بدل ما نمسحها بفراغ. */
 function applySettings() {
   if (settings.name?.ar) translations.ar.restaurant_name = settings.name.ar;
   if (settings.name?.en) translations.en.restaurant_name = settings.name.en;
   if (settings.tagline?.ar) translations.ar.restaurant_tagline = settings.tagline.ar;
   if (settings.tagline?.en) translations.en.restaurant_tagline = settings.tagline.en;
 
-  const logo = document.getElementById("lo-img");
-  if (logo && settings.logo) {
-    logo.style.display = "";     // الصورة اتخفت وهي فاضية (src="") قبل ما نجيب اللوجو، نرجعها تظهر
-    logo.src = settings.logo;
-  }
-
   const callLink = document.getElementById("call-link");
   if (callLink) {
     if (settings.phone) callLink.href = "tel:" + settings.phone;
-    else callLink.style.display = "none";   // مفيش رقم متسجل، اخفي الزرار
+    else callLink.style.display = "none";
   }
 
   const waLink = document.getElementById("whatsapp-link");
@@ -114,23 +212,21 @@ function applySettings() {
     else locLink.style.display = "none";
   }
 
-  // فيديو الهيدر: heroVideoEnabled === false يعني صاحب المطعم مسحه.
-  // مفيش heroVideo متسجل معناه لسه شغال بالفيديو الأصلي بتاع الموقع.
   const video = document.getElementById("header-video");
   if (video) {
     if (settings.heroVideoEnabled === false) {
-      video.style.display = "none";   // بيفضل بس الخلفية الذهبية/الكحلي تحته
+      video.style.display = "none";
     } else if (settings.heroVideo) {
       const source = document.getElementById("header-video-src");
       source.src = settings.heroVideo;
       video.load();
-      video.play().catch(() => {});   // بعض المتصفحات بتمنع التشغيل التلقائي، مش مشكلة لو اتمنع
+      video.play().catch(() => {});
     }
   }
 }
 
 /* ---------------------------------------------------------
-   1) TRANSLATIONS (UI strings)
+   1) TRANSLATIONS
 --------------------------------------------------------- */
 const translations = {
   ar: {
@@ -171,7 +267,7 @@ const translations = {
     removed_fav: "Removed from favorites",
     order_hint: "Ask your server to order",
     view_categories: "Browse all categories",
-        maroo: "Developed by Marwan Maher"
+    maroo: "Developed by Marwan Maher"
   }
 };
 
@@ -259,7 +355,6 @@ function onWindowScroll() {
   scrollTopBtn.classList.toggle("show", y > 420);
   categoriesNav.classList.toggle("scrolled", y > 6);
 
-  // subtle parallax for category hero image
   const heroImg = document.querySelector(".cat-hero-img");
   if (heroImg) {
     const hero = heroImg.closest(".cat-hero");
@@ -270,7 +365,7 @@ function onWindowScroll() {
 }
 
 /* ---------------------------------------------------------
-   6) SCROLL REVEAL (IntersectionObserver)
+   6) SCROLL REVEAL
 --------------------------------------------------------- */
 let revealObserver = null;
 function setupRevealObserver() {
@@ -288,7 +383,6 @@ function observeReveal(selector) {
   document.querySelectorAll(selector).forEach(el => revealObserver.observe(el));
 }
 
-/* Lazy-load with fade-in + skeleton removal */
 function bindImageLoad(imgEl, wrapEl) {
   const done = () => {
     imgEl.classList.add("loaded");
@@ -303,7 +397,7 @@ function bindImageLoad(imgEl, wrapEl) {
 }
 
 /* ---------------------------------------------------------
-   7) RENDER CATEGORIES (top pills with photo avatar)
+   7) RENDER CATEGORIES
 --------------------------------------------------------- */
 function renderCategories() {
   const t = translations[state.lang];
@@ -399,7 +493,7 @@ function buildCard(item, index) {
 }
 
 /* ---------------------------------------------------------
-   9) MAIN RENDER — decides which "page" to show
+   9) MAIN RENDER
 --------------------------------------------------------- */
 function renderMenu() {
   setupRevealObserver();
@@ -414,7 +508,6 @@ function renderMenu() {
   }
 }
 
-/* ---- HOME: theater grid of category cards (real photo hero per category) ---- */
 function renderHomeTheater() {
   const t = translations[state.lang];
   menuContainer.innerHTML = "";
@@ -456,7 +549,6 @@ function renderHomeTheater() {
   observeReveal(".cat-theater");
 }
 
-/* ---- CATEGORY PAGE: back button + real-photo hero + dishes grid ---- */
 function renderCategoryPage(catId) {
   const t = translations[state.lang];
   const cat = categoryMeta(catId);
@@ -498,7 +590,6 @@ function renderCategoryPage(catId) {
   emptyState.classList.toggle("hidden", items.length > 0);
 }
 
-/* ---- FLAT RESULTS: search / favorites triggered from the home screen ---- */
 function renderFlatResults() {
   const t = translations[state.lang];
   menuContainer.innerHTML = "";
@@ -534,9 +625,8 @@ function clearSearch() {
 }
 
 /* ---------------------------------------------------------
-   11) FAVORITES (localStorage)
+   11) FAVORITES
 --------------------------------------------------------- */
-
 function toggleFavorite(id, fromModal, btnEl) {
   const t = translations[state.lang];
   const idx = state.favorites.indexOf(id);
@@ -544,7 +634,6 @@ function toggleFavorite(id, fromModal, btnEl) {
   if (adding) state.favorites.push(id); else state.favorites.splice(idx, 1);
   localStorage.setItem("sm_favorites", JSON.stringify(state.favorites));
   showToast(adding ? t.added_fav : t.removed_fav);
-  
 
   if (btnEl) {
     btnEl.classList.toggle("is-fav", adding);
@@ -561,9 +650,6 @@ function toggleFavFilter() {
   favFilterBtn.classList.toggle("active", state.showFavoritesOnly);
   renderMenu();
 }
-
-
-
 
 /* ---------------------------------------------------------
    12) PRODUCT MODAL
@@ -590,10 +676,10 @@ function openModal(id) {
   if (item.tag) {
     tagEl.textContent = item.tag;
     tagEl.className = "menu-tag " + tagClassOf(item.tag);
+    tagEl.classList.remove("hidden");
   } else {
     tagEl.classList.add("hidden");
   }
-  if (item.tag) tagEl.classList.remove("hidden");
 
   updateModalFavIcon(id);
 
@@ -637,7 +723,7 @@ function applyTranslations() {
 }
 
 /* ---------------------------------------------------------
-   14) THEME TOGGLE (Dark / Light)
+   14) THEME TOGGLE
 --------------------------------------------------------- */
 function toggleTheme() {
   state.theme = state.theme === "light" ? "dark" : "light";
@@ -646,30 +732,21 @@ function toggleTheme() {
 }
 
 /* ---------------------------------------------------------
-   15) GO!
+   15) BOOT — فوري بدون أي انتظار
 --------------------------------------------------------- */
-// شكل شبكة مؤقت (Skeleton) بيظهر فوراً وقت ما الصفحة تفتح، بنفس شكل شبكة الأقسام الحقيقية،
-// عشان الزائر يحس إن في حاجة بتحصل فوراً بدل ما يشوف شاشة فاضية أو نص "جاري التحميل" بس
-function skeletonGrid() {
-  return `<div class="cat-theater-grid">${
-    Array.from({ length: 6 }).map(() => `<div class="skel-tile skel"></div>`).join("")
-  }</div>`;
-}
-
-async function boot() {
-  // لو الكاش موجود، منعرضش حتى الهيكل المؤقت، الموقع يطلع فوراً بالداتا الحقيقية
-  if (!readCache()) {
-    menuContainer.innerHTML = skeletonGrid();
-  }
-  try {
-    await loadMenuData();
-  } catch (err) {
-    console.error("Failed to load menu:", err);
-    menuContainer.innerHTML = '<p style="text-align:center;padding:48px 16px">تعذّر تحميل المنيو، حدّث الصفحة وجرّب تاني.</p>';
-    return;
-  }
+function boot() {
+  // عرض البيانات الافتراضية فوراً — بدون skeleton ولا loader
   applySettings();
   init();
+
+  // مزامنة Firebase في الخلفية (silent update)
+  loadMenuData().then(() => {
+    applySettings();
+    renderCategories();
+    renderMenu();
+  }).catch(err => {
+    console.error("Background sync failed:", err);
+  });
 }
 
 boot();
