@@ -667,37 +667,20 @@ html[dir="rtl"] .back-btn .icon{ transform: scaleX(-1); }
   opacity: .85;
 }
 .footer-credit{
-  margin-top: 6px;
+  margin-top: 2px;
 }
 .footer-credit a{
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 2px;
   font-family: var(--font-signature);
-  font-size: 20px;
-  color: var(--gold-deep);
-  transition: color .2s ease, transform .2s var(--ease-spring);
+  font-size: 15px;
   padding: 4px 12px;
   border-radius: 999px;
 }
-.footer-credit a:hover{
-  color: var(--terracotta);
-  transform: translateY(-2px) scale(1.03);
-}
-.footer-credit a::before{
-  content: "✦";
-  font-size: 14px;
-  color: var(--gold);
-  opacity: .7;
-}
-.footer-credit a::after{
-  content: "✦";
-  font-size: 14px;
-  color: var(--gold);
-  opacity: .7;
-}
+
+
 [data-theme="dark"] .footer-credit a{ color: var(--gold-bright); }
-[data-theme="dark"] .footer-credit a:hover{ color: var(--terracotta); }
 
 /* ==================== ANIMATIONS ==================== */
 @keyframes fadeSlideUp{ from{ opacity:0; transform: translateY(16px); } to{ opacity:1; transform: translateY(0); } }
@@ -706,6 +689,9 @@ html[dir="rtl"] .back-btn .icon{ transform: scaleX(-1); }
 html[dir="ltr"] .restaurant-header{ text-align:center; }
 
 /* Skeleton tile */
+.skel-tile{ border-radius: var(--radius-xl); aspect-ratio: 4/3.1; }
+
+/* Skeleton tile لشبكة التحميل المؤقتة وقت ما معندناش نسخة فورية جاهزة */
 .skel-tile{ border-radius: var(--radius-xl); aspect-ratio: 4/3.1; }
 
 /* Skeleton util */

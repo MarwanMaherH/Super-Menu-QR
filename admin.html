@@ -255,6 +255,21 @@
         </div>
         <button class="btn" type="submit">حفظ الإعدادات</button>
       </form>
+
+      <div class="card" style="margin-top:20px">
+        <div class="panel-head" style="margin-bottom:8px"><h2 style="font-size:1.05rem">سرعة فتح الموقع</h2></div>
+        <p class="tip" style="margin-bottom:14px">
+          لما زبون يفتح الموقع أول مرة على جهازه، بياخد لحظة بسيطة يجيب فيها المنيو من قاعدة البيانات.
+          الزرار ده بياخد "نسخة فورية" من منيوك الحالي (الأقسام والأصناف والإعدادات) وينزّلها كملف،
+          تحطه في المشروع فيظهر المنيو لزوّار أول مرة <strong>فوراً من غير أي انتظار خالص</strong>،
+          وبعدين الموقع بيتأكد من Firebase في الخلفية بصمت.
+        </p>
+        <p class="tip" style="margin-bottom:14px">
+          كرر الخطوة دي كل ما تعمل تعديلات كبيرة في المنيو (أصناف جديدة، تغييرات أسعار كتير)،
+          عشان النسخة الفورية تفضل قريبة من الحقيقة.
+        </p>
+        <button type="button" class="btn secondary" id="export-snapshot-btn">⬇ تصدير نسخة فورية من المنيو</button>
+      </div>
     </section>
   </main>
 </div>
@@ -1006,6 +1021,46 @@
       state.settings = { ...state.settings, ...data };
       fillSettings();
     }, "تم حفظ الإعدادات");
+  });
+
+  /* تصدير نسخة فورية من المنيو الحالي، عشان تحطها في script.js
+     فيظهر المنيو فوراً لأول زيارة على أي جهاز، من غير ما ننتظر Firebase. */
+  $("#export-snapshot-btn").addEventListener("click", () => {
+    if (!state.cats.length || !state.items.length) {
+      toast("لازم يكون عندك أقسام وأصناف الأول قبل التصدير", "err");
+      return;
+    }
+    const availableItems = state.items.filter(i => i.available !== false);   // نفس فلتر الموقع الحقيقي بالظبط
+
+    const fileContent =
+`/* ==========================================================
+   نسخة فورية من منيو "${state.settings?.name?.ar || "مطعمك"}"
+   اتصدّرت: ${new Date().toLocaleString("ar-EG")}
+
+   طريقة الاستخدام:
+   افتح script.js، ولاقي الكود ده في أول الملف:
+     const DEFAULT_CATEGORIES = [];
+     const DEFAULT_ITEMS = [];
+     const DEFAULT_SETTINGS = { ... };
+   واستبدل الثلاثة بالكود اللي تحت بالكامل.
+   ========================================================== */
+const DEFAULT_CATEGORIES = ${JSON.stringify(state.cats, null, 2)};
+
+const DEFAULT_ITEMS = ${JSON.stringify(availableItems, null, 2)};
+
+const DEFAULT_SETTINGS = ${JSON.stringify(state.settings, null, 2)};
+`;
+
+    const blob = new Blob([fileContent], { type: "text/javascript;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "default-data-snapshot.js";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast("اتنزّل الملف — شوف التعليمات جواه");
   });
 </script>
 </body>

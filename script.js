@@ -17,103 +17,16 @@ function cldFetch(url, width) {
 }
 
 /* ---------------------------------------------------------
-   DEFAULT DATA — بتظهر فوراً بدون أي انتظار
+   DEFAULT DATA — نسخة احتياطية حقيقية من منيوك، بتظهر فوراً
+   من غير ما ننتظر Firebase. فاضية دلوقتي، وبتتملى لما تدوس
+   "تصدير نسخة فورية" من تاب الإعدادات في لوحة الأدمن.
+   مهم: دي لازم تكون داتا حقيقية من مطعمك، مش أمثلة.
+   طول ما هي فاضية، الموقع بيعرض هيكل تحميل بسيط وبعدين
+   المنيو الحقيقي من Firebase (فرق أقل من ثانية عادةً)
+   بدل ما يعرض أكل مش بتاعك.
 --------------------------------------------------------- */
-const DEFAULT_CATEGORIES = [
-  {
-    id: "breakfast", ar: "فطار", en: "Breakfast", color: "#C9A24B",
-    banner: "https://images.unsplash.com/photo-1533089862017-5614ecb352ae?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1533089862017-5614ecb352ae?w=200&q=80",
-    order: 0, number: 1, icon: ""
-  },
-  {
-    id: "main-dishes", ar: "أطباق رئيسية", en: "Main Dishes", color: "#C6512C",
-    banner: "https://images.unsplash.com/photo-1544025162-d76694265947?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1544025162-d76694265947?w=200&q=80",
-    order: 1, number: 2, icon: ""
-  },
-  {
-    id: "desserts", ar: "حلويات", en: "Desserts", color: "#6E2A3A",
-    banner: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=800&q=80",
-    thumb: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=200&q=80",
-    order: 2, number: 3, icon: ""
-  }
-];
-
-const DEFAULT_ITEMS = [
-  {
-    id: 1, category: "breakfast",
-    name: { ar: "فول مدمس بالطحينة", en: "Hummus Tahini" },
-    description: { ar: "فول مدمس ناعم مع طحينة وزيت زيتون بكر ممتاز وكمون", en: "Smooth fava beans with tahini, premium olive oil and cumin" },
-    price: 35, tag: "",
-    image: "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=600&q=80",
-    available: true, order: 0
-  },
-  {
-    id: 2, category: "breakfast",
-    name: { ar: "بيض مقلي بالسمن", en: "Sunny Side Eggs" },
-    description: { ar: "بيضتان مقليتان على السمن البلدي مع بهارات مشكلة", en: "Two farm eggs fried in clarified butter with mixed spices" },
-    price: 28, tag: "NEW",
-    image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=600&q=80",
-    available: true, order: 1
-  },
-  {
-    id: 3, category: "breakfast",
-    name: { ar: "فتة شاورما", en: "Shawarma Fatta" },
-    description: { ar: "فتة بالشاورما والأرز والخل والثومية والخبز المحمص", en: "Fatta with shawarma, rice, vinegar, garlic sauce and toasted bread" },
-    price: 75, tag: "SIGNATURE",
-    image: "https://images.unsplash.com/photo-1561651823-34a0658ebc9d?w=600&q=80",
-    available: true, order: 2
-  },
-  {
-    id: 4, category: "main-dishes",
-    name: { ar: "ريش ضاني مشوية", en: "Grilled Lamb Chops" },
-    description: { ar: "ريش ضاني مشوية على الفحم مع الأرز البسمتي والسلطة", en: "Charcoal-grilled lamb chops with basmati rice and salad" },
-    price: 185, tag: "SIGNATURE",
-    image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=600&q=80",
-    available: true, order: 3
-  },
-  {
-    id: 5, category: "main-dishes",
-    name: { ar: "دجاج مشوي بالأعشاب", en: "Herb Grilled Chicken" },
-    description: { ar: "نصف دجاجة مشوية متبلة بالزعتر والروزماري والليمون", en: "Half chicken grilled with thyme, rosemary and lemon marinade" },
-    price: 95, tag: "",
-    image: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?w=600&q=80",
-    available: true, order: 4
-  },
-  {
-    id: 6, category: "main-dishes",
-    name: { ar: "كفتة مشوية", en: "Grilled Kofta" },
-    description: { ar: "كفتة لحم بقري مشوية مع الطماطم والفلفل وصوص الطحينة", en: "Grilled beef kofta with tomatoes, peppers and tahini sauce" },
-    price: 110, tag: "CHEF'S PICK",
-    image: "https://images.unsplash.com/photo-1529193591184-b1d58069ecdd?w=600&q=80",
-    available: true, order: 5
-  },
-  {
-    id: 7, category: "desserts",
-    name: { ar: "كريم كراميل", en: "Crème Caramel" },
-    description: { ar: "حلى الكريم كراميل البارد بالفانيليا البوربون", en: "Cold vanilla crème caramel with bourbon vanilla" },
-    price: 40, tag: "",
-    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80",
-    available: true, order: 6
-  },
-  {
-    id: 8, category: "desserts",
-    name: { ar: "كيك الشوكولاتة الداكنة", en: "Dark Chocolate Cake" },
-    description: { ar: "كيك شوكولاتة غني 70% مع صوص الشوكولاتة الساخن والفانيليا", en: "Rich 70% dark chocolate cake with hot chocolate sauce and vanilla" },
-    price: 55, tag: "CHEF'S PICK",
-    image: "https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&q=80",
-    available: true, order: 7
-  },
-  {
-    id: 9, category: "desserts",
-    name: { ar: "كنافة نابلسية", en: "Knafeh Nabulsi" },
-    description: { ar: "كنافة بالجبن النابلسي والقطر والفستق الحلبي", en: "Knafeh with Nabulsi cheese, syrup and Aleppo pistachios" },
-    price: 48, tag: "NEW",
-    image: "https://images.unsplash.com/photo-1519915028121-7d3463d20b13?w=600&q=80",
-    available: true, order: 8
-  }
-];
+const DEFAULT_CATEGORIES = [];
+const DEFAULT_ITEMS = [];
 
 const DEFAULT_SETTINGS = {
   name: { ar: "سوبر منيو", en: "Super Menu" },
@@ -247,7 +160,6 @@ const translations = {
     removed_fav: "تمت الإزالة من المفضلة",
     order_hint: "اطلب من فريق الخدمة",
     view_categories: "تصفح كل الأقسام",
-    maroo: "من تطوير مروان ماهر"
   },
   en: {
     restaurant_name: "Super Menu",
@@ -731,19 +643,43 @@ function toggleTheme() {
   document.documentElement.setAttribute("data-theme", state.theme);
 }
 
+// هيكل شبكة مؤقت (Skeleton) بيظهر فوراً لحد ما أول بيانات حقيقية توصل،
+// بيستخدم فقط لما معندناش أي نسخة حقيقية جاهزة (لا كاش ولا نسخة مُصدَّرة)
+function skeletonGrid() {
+  return `<div class="cat-theater-grid">${
+    Array.from({ length: 6 }).map(() => `<div class="skel-tile skel"></div>`).join("")
+  }</div>`;
+}
+
 /* ---------------------------------------------------------
-   15) BOOT — فوري بدون أي انتظار
+   15) BOOT
+   -----------------------------------------------------------
+   3 احتمالات بالترتيب:
+   1) فيه كاش من آخر 5 دقايق (نفس الجهاز زار الموقع قبل كده)
+      → يظهر فوراً صح 100%، ومفيش داعي نكلم Firebase تاني دلوقتي.
+   2) مفيش كاش، لكن فيه نسخة حقيقية مُصدَّرة من المنيو (DEFAULT_ITEMS)
+      → تظهر فوراً هي، وفي الخلفية بنتأكد من Firebase ونحدّث بصمت
+      لو صاحب المطعم غيّر حاجة بعد ما اتصدرت النسخة دي.
+   3) أول زيارة خالص على جهاز جديد ومفيش نسخة مُصدَّرة لسه
+      → هيكل تحميل بسيط لحد ما المنيو الحقيقي يوصل من Firebase
+      (أسرع بكتير من قبل، لكن مش مزيّف أبداً).
 --------------------------------------------------------- */
 function boot() {
-  // عرض البيانات الافتراضية فوراً — بدون skeleton ولا loader
-  applySettings();
-  init();
+  const cached = readCache();
+  const hasInstantData = !!cached || DEFAULT_ITEMS.length > 0;
 
-  // مزامنة Firebase في الخلفية (silent update)
+  if (hasInstantData) {
+    if (cached) { categories = cached.categories; menuItems = cached.menuItems; settings = cached.settings; }
+    applySettings();
+    init();
+  } else {
+    menuContainer.innerHTML = skeletonGrid();
+  }
+
   loadMenuData().then(() => {
     applySettings();
-    renderCategories();
-    renderMenu();
+    if (hasInstantData) { renderCategories(); renderMenu(); }
+    else { init(); }
   }).catch(err => {
     console.error("Background sync failed:", err);
   });
